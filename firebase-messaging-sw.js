@@ -20,5 +20,19 @@ measurementId: "G-0FDEWTYKB2"
 
 });
 
-const messaging =
-firebase.messaging();
+const messaging = firebase.messaging();
+
+messaging.onBackgroundMessage(function(payload) {
+
+self.registration.showNotification(
+
+payload.notification.title,
+
+{
+body: payload.notification.body,
+icon: 'https://cdn-icons-png.flaticon.com/512/1827/1827392.png'
+}
+
+);
+
+});
