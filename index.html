@@ -424,7 +424,8 @@ getDocs,
 deleteDoc,
 updateDoc,
 doc,
-getDoc
+getDoc,
+onSnapshot
 }
 from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
 
@@ -525,7 +526,8 @@ console.log(error);
 
 initNotification();
 
-
+listenNotifications();
+  
 /* FOREGROUND MESSAGE */
 
 onMessage(messaging,(payload)=>{
@@ -545,6 +547,42 @@ icon: 'https://cdn-icons-png.flaticon.com/512/1827/1827392.png'
 
 });
 
+
+function listenNotifications(){
+
+const notificationRef =
+collection(db,'notifications');
+
+onSnapshot(notificationRef,(snapshot)=>{
+
+snapshot.docChanges().forEach((change)=>{
+
+if(change.type === 'added'){
+
+const data = change.doc.data();
+
+if(Notification.permission === 'granted'){
+
+new Notification(
+
+data.title,
+
+{
+body:data.body,
+icon:'https://cdn-icons-png.flaticon.com/512/1827/1827392.png'
+}
+
+);
+
+}
+
+}
+
+});
+
+});
+
+}
 
 /* LOAD PROJECTS */
 
@@ -752,6 +790,15 @@ if(id){
 
 await updateDoc(doc(db,'projects',id),data);
 
+await addDoc(
+collection(db,'notifications'),
+{
+title:'Project Updated',
+body:data.name,
+created_at:new Date()
+}
+);
+
 alert('Project Updated');
 
 }else{
@@ -759,7 +806,14 @@ alert('Project Updated');
 await addDoc(projectRef,data);
 
 alert('Project Added');
-
+await addDoc(
+collection(db,'notifications'),
+{
+title:'New Project Added',
+body:data.name,
+created_at:new Date()
+}
+);
 }
 
 projectForm.reset();
