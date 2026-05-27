@@ -475,8 +475,18 @@ let table;
 if ('serviceWorker' in navigator) {
 
 navigator.serviceWorker.register(
-'firebase-messaging-sw.js'
-);
+'./firebase-messaging-sw.js'
+)
+.then((registration)=>{
+
+console.log('Service Worker Registered');
+
+})
+.catch((error)=>{
+
+console.log(error);
+
+});
 
 }
 
