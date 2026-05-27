@@ -272,7 +272,8 @@ class="table table-bordered align-middle">
 <th>Project</th>
 <th>Description</th>
 <th>Status</th>
-<th>Website</th>
+<th>Staging</th>
+<th>Production</th>
 <th>Actions</th>
 
 </tr>
@@ -344,14 +345,29 @@ required>
 
 <div class="col-md-6 mb-3">
 
+<div class="col-md-6 mb-3">
+
 <label>
-Website URL
+Staging URL
 </label>
 
 <input type="text"
-id="projectUrl"
-class="form-control"
-required>
+id="stagingUrl"
+class="form-control">
+
+</div>
+
+<div class="col-md-6 mb-3">
+
+<label>
+Production URL
+</label>
+
+<input type="text"
+id="productionUrl"
+class="form-control">
+
+</div>
 
 </div>
 
@@ -664,11 +680,23 @@ ${project.status}
 
 <td>
 
-<a href="${project.url}"
+<a href="${project.stagingUrl}"
 target="_blank"
 class="visit-btn">
 
-Open
+Staging
+
+</a>
+
+</td>
+
+<td>
+
+<a href="${project.productionUrl}"
+target="_blank"
+class="visit-btn">
+
+Production
 
 </a>
 
@@ -732,7 +760,9 @@ projectName.value = data.name;
 
 projectImage.value = data.image;
 
-projectUrl.value = data.url;
+stagingUrl.value = data.stagingUrl;
+
+productionUrl.value = data.productionUrl;
 
 projectDesc.value = data.description;
 
@@ -776,7 +806,9 @@ name: projectName.value,
 
 image: projectImage.value,
 
-url: projectUrl.value,
+stagingUrl: stagingUrl.value,
+
+productionUrl: productionUrl.value,
 
 description: projectDesc.value,
 
