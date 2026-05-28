@@ -1110,10 +1110,7 @@ try{
 const id =
 document.getElementById('projectId').value;
 
-const data = {
-
-name:
-document.getElementById('projectName').value.trim(),
+/* IMAGE UPLOAD */
 
 let imageUrl =
 'https://i.ibb.co/0jdbf75Y/image.png';
@@ -1142,6 +1139,12 @@ await getDownloadURL(storageRef);
 }
 
 
+
+const data = {
+
+name:
+document.getElementById('projectName').value.trim(),
+  
 image: imageUrl,
 
 stagingUrl:
