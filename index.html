@@ -333,33 +333,25 @@ Wrong Password
 
 </div>
 
+```html
 <script>
-
-/* PASSWORD */
 
 const dashboardPassword = "Shubh";
 
-/* SESSION TIME */
-
 const sessionTime = 60000;
-
-/* SESSION DATA */
 
 const loginData =
 JSON.parse(
-sessionStorage.getItem(
-'dashboard_login'
-)
+sessionStorage.getItem('dashboard_login')
 );
 
 let validSession = false;
 
-/* CHECK SESSION */
+/* SESSION CHECK */
 
 if(
 loginData &&
-(Date.now() - loginData.loginTime)
-< sessionTime
+(Date.now() - loginData.loginTime) < sessionTime
 ){
 
 validSession = true;
@@ -371,20 +363,16 @@ validSession = true;
 function openDashboard(){
 
 document
-.getElementById(
-'loginOverlay'
-)
+.getElementById('loginOverlay')
 .style.display = 'none';
 
 document
-.getElementById(
-'mainDashboard'
-)
+.getElementById('mainDashboard')
 .style.display = 'block';
 
 }
 
-/* VALID LOGIN */
+/* VALID SESSION */
 
 if(validSession){
 
@@ -392,32 +380,18 @@ openDashboard();
 
 }else{
 
-/* HIDE DASHBOARD */
-
 document
-.getElementById(
-'mainDashboard'
-)
+.getElementById('mainDashboard')
 .style.display = 'none';
 
-/* LOGIN BUTTON */
-
 document
-.getElementById(
-'loginBtn'
-)
-.addEventListener(
-'click',
-()=>{
+.getElementById('loginBtn')
+.addEventListener('click',()=>{
 
 const password =
 document
-.getElementById(
-'loginPassword'
-)
+.getElementById('loginPassword')
 .value;
-
-/* SUCCESS */
 
 if(password === dashboardPassword){
 
@@ -430,43 +404,31 @@ loginTime: Date.now()
 
 openDashboard();
 
-/* WRONG */
-
 }else{
 
 document
-.getElementById(
-'loginError'
-)
+.getElementById('loginError')
 .style.display = 'block';
 
 }
 
-}
-);
+});
 
 /* ENTER KEY */
 
 document
-.getElementById(
-'loginPassword'
-)
-.addEventListener(
-'keypress',
-function(e){
+.getElementById('loginPassword')
+.addEventListener('keypress',(e)=>{
 
 if(e.key === 'Enter'){
 
 document
-.getElementById(
-'loginBtn'
-)
+.getElementById('loginBtn')
 .click();
 
 }
 
-}
-);
+});
 
 }
 
@@ -483,6 +445,8 @@ location.reload();
 }, sessionTime);
 
 </script>
+
+
   <div id="mainDashboard" style="display:none;">
 
   <div class="card-box">
