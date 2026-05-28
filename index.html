@@ -812,27 +812,84 @@ alert('Delete Failed');
 
 /* SAVE */
 
+/* SAVE */
+
 projectForm.addEventListener('submit', async(e)=>{
 
 e.preventDefault();
+
+const submitBtn =
+projectForm.querySelector('button[type="submit"]');
+
+submitBtn.disabled = true;
+
+const oldBtnText = submitBtn.innerHTML;
+
+submitBtn.innerHTML =
+`<span class="spinner-border spinner-border-sm"></span>
+ Saving...`;
+
+try{
 
 const id = projectId.value;
 
 const data = {
 
-name: projectName.value,
+name: projectName.value.trim(),
 
-image: projectImage.value,
+image: projectImage.value.trim(),
 
-stagingUrl: stagingUrl.value,
+stagingUrl: stagingUrl.value.trim(),
 
-productionUrl: productionUrl.value,
+productionUrl: productionUrl.value.trim(),
 
-description: projectDesc.value,
+description: projectDesc.value.trim(),
 
 status: projectStatus.value
 
 };
+
+
+/* CHECK DUPLICATE PROJECT */
+
+const snapshot = await getDocs(projectRef);
+
+let duplicateFound = false;
+
+snapshot.forEach((docItem)=>{
+
+const project = docItem.data();
+
+if(
+
+project.name.toLowerCase() === data.name.toLowerCase()
+
+&&
+
+docItem.id !== id
+
+){
+
+duplicateFound = true;
+
+}
+
+});
+
+if(duplicateFound){
+
+alert('Project already exists');
+
+submitBtn.disabled = false;
+
+submitBtn.innerHTML = oldBtnText;
+
+return;
+
+}
+
+
+/* UPDATE */
 
 if(id){
 
@@ -847,14 +904,13 @@ created_at:new Date()
 }
 );
 
-
-
 }else{
+
+/* ADD */
 
 await addDoc(projectRef,data);
 
-
-  await addDoc(
+await addDoc(
 collection(db,'notifications'),
 {
 title:'New Project Added',
@@ -862,6 +918,7 @@ body:data.name,
 created_at:new Date()
 }
 );
+
 }
 
 projectForm.reset();
@@ -871,6 +928,22 @@ projectId.value='';
 modal.hide();
 
 loadProjects();
+
+alert('Project Saved Successfully');
+
+}catch(error){
+
+console.log(error);
+
+alert('Something went wrong');
+
+}finally{
+
+submitBtn.disabled = false;
+
+submitBtn.innerHTML = oldBtnText;
+
+}
 
 });
 
