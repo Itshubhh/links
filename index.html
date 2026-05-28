@@ -589,8 +589,8 @@ Upload Image
 type="file"
 id="projectImage"
 class="form-control"
-accept="image/*"
->
+accept="image/*">
+
 
 </div>
 
@@ -702,6 +702,16 @@ onMessage
 }
 from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-messaging.js';
 
+import {
+getStorage,
+ref,
+uploadBytes,
+getDownloadURL
+}
+from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js';
+
+
+
 
 /* FIREBASE CONFIG */
 
@@ -726,6 +736,7 @@ measurementId: 'G-0FDEWTYKB2'
 const app = initializeApp(firebaseConfig);
 
 const db = getFirestore(app);
+const storage = getStorage(app);
 
 const messaging = getMessaging(app);
 
@@ -1104,10 +1115,34 @@ const data = {
 name:
 document.getElementById('projectName').value.trim(),
 
-image:
-document.getElementById('projectImage').value.trim()
-||
-'https://i.ibb.co/0jdbf75Y/image.png',
+let imageUrl =
+'https://i.ibb.co/0jdbf75Y/image.png';
+
+const imageFile =
+document.getElementById('projectImage').files[0];
+
+if(imageFile){
+
+const storageRef = ref(
+storage,
+'projects/' +
+Date.now() +
+'_' +
+imageFile.name
+);
+
+await uploadBytes(
+storageRef,
+imageFile
+);
+
+imageUrl =
+await getDownloadURL(storageRef);
+
+}
+
+
+image: imageUrl,
 
 stagingUrl:
 document.getElementById('stagingUrl').value.trim(),
