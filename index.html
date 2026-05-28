@@ -195,7 +195,7 @@ width:100%;
 <body>
 <style>
 
-body{
+html{
 display:none;
 }
 
@@ -203,70 +203,83 @@ display:none;
 
 <script>
 
+/* PASSWORD */
+
 const dashboardPassword = "Shubh";
 
-const sessionTime = 1 * 60 * 1000;
+/* 1 MINUTE */
+
+const sessionTime = 60000;
+
+/* LOGIN DATA */
 
 const loginData =
 JSON.parse(
 sessionStorage.getItem('dashboard_login')
 );
 
-/* CHECK LOGIN */
+let validSession = false;
 
-let allowAccess = false;
+/* CHECK SESSION */
 
 if(
 loginData &&
 (Date.now() - loginData.loginTime) < sessionTime
 ){
 
-allowAccess = true;
+validSession = true;
 
-}else{
+}
 
-sessionStorage.removeItem('dashboard_login');
+/* ASK PASSWORD */
+
+if(!validSession){
 
 const enteredPassword =
 prompt("Enter Login Password");
 
-if(enteredPassword === dashboardPassword){
+/* WRONG PASSWORD */
 
-sessionStorage.setItem(
-'dashboard_login',
-JSON.stringify({
-loginTime: Date.now()
-})
-);
+if(enteredPassword !== dashboardPassword){
 
-allowAccess = true;
+document.documentElement.innerHTML = `
 
-}else{
+<head>
+<title>Access Denied</title>
+<style>
 
-document.write(`
-
-<div style="
+body{
+margin:0;
 height:100vh;
 display:flex;
 justify-content:center;
 align-items:center;
 background:#f1f5f9;
 font-family:Arial;
-">
+}
 
-<div style="
+.box{
 background:white;
 padding:40px;
 border-radius:15px;
 box-shadow:0 5px 20px rgba(0,0,0,0.1);
 text-align:center;
 width:320px;
-">
+}
 
-<h1 style="
+h1{
 color:red;
 margin-bottom:10px;
-">
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="box">
+
+<h1>
 Access Denied
 </h1>
 
@@ -276,32 +289,28 @@ Wrong Password
 
 </div>
 
-</div>
+</body>
 
-`);
+`;
 
-throw new Error("Blocked");
-
-}
+throw new Error("Access Blocked");
 
 }
 
+/* SAVE SESSION */
 
-/* SHOW PAGE */
-
-if(allowAccess){
-
-document.addEventListener(
-'DOMContentLoaded',
-function(){
-
-document.body.style.display = 'block';
-
-}
+sessionStorage.setItem(
+'dashboard_login',
+JSON.stringify({
+loginTime: Date.now()
+})
 );
 
 }
 
+/* SHOW PAGE */
+
+document.documentElement.style.display = 'block';
 
 /* AUTO EXPIRE */
 
