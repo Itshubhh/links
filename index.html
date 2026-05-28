@@ -339,7 +339,7 @@ Image URL
 <input type="text"
 id="projectImage"
 class="form-control"
-required>
+placeholder="Enter Image URL">
 
 </div>
 
@@ -853,7 +853,9 @@ name:
 document.getElementById('projectName').value.trim(),
 
 image:
-document.getElementById('projectImage').value.trim(),
+document.getElementById('projectImage').value.trim()
+||
+'https://i.ibb.co/0jdbf75Y/image.png',
 
 stagingUrl:
 document.getElementById('stagingUrl').value.trim(),
