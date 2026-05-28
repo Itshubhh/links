@@ -199,7 +199,141 @@ html{
 display:none;
 }
 
+/* LOGIN POPUP */
+
+#loginOverlay{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(15,23,42,0.75);
+z-index:999999;
+display:flex;
+justify-content:center;
+align-items:center;
+backdrop-filter:blur(5px);
+}
+
+#loginCard{
+width:100%;
+max-width:400px;
+background:white;
+border-radius:20px;
+overflow:hidden;
+box-shadow:0 10px 40px rgba(0,0,0,0.2);
+animation:popup .3s ease;
+}
+
+@keyframes popup{
+
+from{
+transform:scale(.8);
+opacity:0;
+}
+
+to{
+transform:scale(1);
+opacity:1;
+}
+
+}
+
+.login-header{
+background:#2563eb;
+padding:25px;
+text-align:center;
+color:white;
+}
+
+.login-header i{
+font-size:45px;
+margin-bottom:10px;
+}
+
+.login-body{
+padding:30px;
+}
+
+.login-input{
+height:50px;
+border-radius:12px;
+font-size:14px;
+}
+
+.login-btn{
+height:50px;
+border:none;
+border-radius:12px;
+background:#2563eb;
+color:white;
+font-weight:600;
+width:100%;
+transition:.3s;
+font-size:15px;
+}
+
+.login-btn:hover{
+background:#1d4ed8;
+}
+
+.login-error{
+font-size:13px;
+color:red;
+display:none;
+margin-top:12px;
+text-align:center;
+font-weight:600;
+}
+
 </style>
+
+<!-- LOGIN POPUP -->
+
+<div id="loginOverlay">
+
+<div id="loginCard">
+
+<div class="login-header">
+
+<i class="fa fa-lock"></i>
+
+<h4 class="mb-0">
+Secure Dashboard Login
+</h4>
+
+</div>
+
+<div class="login-body">
+
+<input
+type="password"
+id="loginPassword"
+class="form-control login-input mb-3"
+placeholder="Enter Password"
+>
+
+<button
+id="loginBtn"
+class="login-btn">
+
+Login
+
+</button>
+
+<div
+id="loginError"
+class="login-error">
+
+Wrong Password
+
+</div>
+
+</div>
+
+</div>
+
+</div>
 
 <script>
 
@@ -207,11 +341,11 @@ display:none;
 
 const dashboardPassword = "Shubh";
 
-/* 1 MINUTE */
+/* SESSION TIME 1 MINUTE */
 
 const sessionTime = 60000;
 
-/* LOGIN DATA */
+/* CHECK SESSION */
 
 const loginData =
 JSON.parse(
@@ -219,8 +353,6 @@ sessionStorage.getItem('dashboard_login')
 );
 
 let validSession = false;
-
-/* CHECK SESSION */
 
 if(
 loginData &&
@@ -231,73 +363,44 @@ validSession = true;
 
 }
 
-/* ASK PASSWORD */
+/* SHOW PAGE IF SESSION ACTIVE */
 
-if(!validSession){
+if(validSession){
 
-const enteredPassword =
-prompt("Enter Login Password");
+document.documentElement.style.display = 'block';
 
-/* WRONG PASSWORD */
+document.addEventListener(
+'DOMContentLoaded',
+()=>{
 
-if(enteredPassword !== dashboardPassword){
+const overlay =
+document.getElementById('loginOverlay');
 
-document.documentElement.innerHTML = `
+if(overlay){
 
-<head>
-<title>Access Denied</title>
-<style>
-
-body{
-margin:0;
-height:100vh;
-display:flex;
-justify-content:center;
-align-items:center;
-background:#f1f5f9;
-font-family:Arial;
-}
-
-.box{
-background:white;
-padding:40px;
-border-radius:15px;
-box-shadow:0 5px 20px rgba(0,0,0,0.1);
-text-align:center;
-width:320px;
-}
-
-h1{
-color:red;
-margin-bottom:10px;
-}
-
-</style>
-</head>
-
-<body>
-
-<div class="box">
-
-<h1>
-Access Denied
-</h1>
-
-<p>
-Wrong Password
-</p>
-
-</div>
-
-</body>
-
-`;
-
-throw new Error("Access Blocked");
+overlay.remove();
 
 }
 
-/* SAVE SESSION */
+}
+);
+
+}else{
+
+/* SHOW LOGIN POPUP */
+
+document.documentElement.style.display = 'block';
+
+document
+.getElementById('loginBtn')
+.addEventListener('click',()=>{
+
+const password =
+document
+.getElementById('loginPassword')
+.value;
+
+if(password === dashboardPassword){
 
 sessionStorage.setItem(
 'dashboard_login',
@@ -306,17 +409,31 @@ loginTime: Date.now()
 })
 );
 
+document
+.getElementById('loginOverlay')
+.remove();
+
+location.reload();
+
+}else{
+
+document
+.getElementById('loginError')
+.style.display = 'block';
+
 }
 
-/* SHOW PAGE */
+});
 
-document.documentElement.style.display = 'block';
+}
 
 /* AUTO EXPIRE */
 
 setTimeout(()=>{
 
-sessionStorage.removeItem('dashboard_login');
+sessionStorage.removeItem(
+'dashboard_login'
+);
 
 alert('Session Expired');
 
