@@ -195,7 +195,9 @@ width:100%;
 <body>
 <style>
 
-
+html{
+display:none;
+}
 
 /* LOGIN POPUP */
 
@@ -297,7 +299,7 @@ font-weight:600;
 <i class="fa fa-lock"></i>
 
 <h4 class="mb-0">
-Secure Dashboard LoginA
+Secure Dashboard Login
 </h4>
 
 </div>
@@ -335,9 +337,15 @@ Wrong Password
 
 <script>
 
+/* PASSWORD */
+
 const dashboardPassword = "Shubh";
 
+/* SESSION TIME 1 MINUTE */
+
 const sessionTime = 60000;
+
+/* CHECK SESSION */
 
 const loginData =
 JSON.parse(
@@ -345,8 +353,6 @@ sessionStorage.getItem('dashboard_login')
 );
 
 let validSession = false;
-
-/* SESSION CHECK */
 
 if(
 loginData &&
@@ -357,31 +363,33 @@ validSession = true;
 
 }
 
-/* OPEN DASHBOARD */
-
-function openDashboard(){
-
-document
-.getElementById('loginOverlay')
-.style.display = 'none';
-
-document
-.getElementById('mainDashboard')
-.style.display = 'block';
-
-}
-
-/* VALID SESSION */
+/* SHOW PAGE IF SESSION ACTIVE */
 
 if(validSession){
 
-openDashboard();
+document.documentElement.style.display = 'block';
+
+document.addEventListener(
+'DOMContentLoaded',
+()=>{
+
+const overlay =
+document.getElementById('loginOverlay');
+
+if(overlay){
+
+overlay.remove();
+
+}
+
+}
+);
 
 }else{
 
-document
-.getElementById('mainDashboard')
-.style.display = 'none';
+/* SHOW LOGIN POPUP */
+
+document.documentElement.style.display = 'block';
 
 document
 .getElementById('loginBtn')
@@ -401,29 +409,17 @@ loginTime: Date.now()
 })
 );
 
-openDashboard();
+document
+.getElementById('loginOverlay')
+.remove();
+
+location.reload();
 
 }else{
 
 document
 .getElementById('loginError')
 .style.display = 'block';
-
-}
-
-});
-
-/* ENTER KEY */
-
-document
-.getElementById('loginPassword')
-.addEventListener('keypress',(e)=>{
-
-if(e.key === 'Enter'){
-
-document
-.getElementById('loginBtn')
-.click();
 
 }
 
@@ -439,16 +435,15 @@ sessionStorage.removeItem(
 'dashboard_login'
 );
 
+alert('Session Expired');
+
 location.reload();
 
 }, sessionTime);
 
 </script>
-
-
-  <div id="mainDashboard" style="display:none;">
-
   <div class="card-box">
+
 <div class="notification-box">
 
 <i class="fa fa-bell"></i>
@@ -1259,7 +1254,7 @@ table.column(4)
 loadProjects();
 
 </script>
-</div>
+
 </body>
 
 </html>
