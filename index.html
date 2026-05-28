@@ -44,38 +44,6 @@ padding:20px;
 border-radius:15px;
 box-shadow:0px 5px 20px rgba(0,0,0,0.05);
 }
-#uploadBox{
-border:2px dashed #cbd5e1;
-border-radius:16px;
-padding:25px;
-text-align:center;
-background:#f8fafc;
-cursor:pointer;
-transition:.3s;
-position:relative;
-overflow:hidden;
-min-height:220px;
-display:flex;
-align-items:center;
-justify-content:center;
-}
-
-#uploadBox:hover{
-border-color:#2563eb;
-background:#eff6ff;
-}
-
-.upload-icon{
-font-size:50px;
-color:#2563eb;
-margin-bottom:15px;
-}
-
-#uploadBox.dragover{
-border-color:#2563eb;
-background:#dbeafe;
-}
-
 
 .topbar{
 display:flex;
@@ -375,7 +343,7 @@ const dashboardPassword = "Shubh";
 
 /* SESSION TIME 1 MINUTE */
 
-const sessionTime = 1800000;
+const sessionTime = 60000;
 
 /* CHECK SESSION */
 
@@ -610,59 +578,18 @@ required>
 
 </div>
 
-
 <div class="col-md-6 mb-3">
 
-<label class="mb-2">
-Upload Image
+<label>
+Image URL
 </label>
 
-<div id="uploadBox">
-
-<input
-type="file"
+<input type="text"
 id="projectImage"
-accept="image/*"
-hidden>
-
-<div class="upload-content">
-
-<i class="fa fa-cloud-arrow-up upload-icon"></i>
-
-<h6 class="mb-2">
-Drag & Drop Image
-</h6>
-
-<p class="text-muted small mb-2">
-or Paste Screenshot (Ctrl + V)
-</p>
-
-<button
-type="button"
-id="browseBtn"
-class="btn btn-primary btn-sm">
-
-Browse Image
-
-</button>
+class="form-control"
+placeholder="Enter Image URL">
 
 </div>
-
-<img
-id="previewImage"
-style="
-display:none;
-width:100%;
-height:220px;
-object-fit:cover;
-border-radius:12px;
-">
-
-</div>
-
-</div>
-
-
 
 
 <div class="col-md-6 mb-3">
@@ -771,16 +698,6 @@ onMessage
 }
 from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-messaging.js';
 
-import {
-getStorage,
-ref,
-uploadBytes,
-getDownloadURL
-}
-from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js';
-
-
-
 
 /* FIREBASE CONFIG */
 
@@ -805,7 +722,6 @@ measurementId: 'G-0FDEWTYKB2'
 const app = initializeApp(firebaseConfig);
 
 const db = getFirestore(app);
-const storage = getStorage(app);
 
 const messaging = getMessaging(app);
 
@@ -1145,137 +1061,7 @@ alert('Delete Failed');
 
 
 /* SAVE */
-
-let pastedImageFile = null;
-
-const uploadBox =
-document.getElementById('uploadBox');
-
-const projectImage =
-document.getElementById('projectImage');
-
-const previewImage =
-document.getElementById('previewImage');
-
-const browseBtn =
-document.getElementById('browseBtn');
-
-/* OPEN FILE */
-
-browseBtn.addEventListener(
-'click',
-()=>{
-
-projectImage.click();
-
-}
-);
-
-/* FILE CHANGE */
-
-projectImage.addEventListener(
-'change',
-(e)=>{
-
-const file = e.target.files[0];
-
-showPreview(file);
-
-}
-);
-
-/* DRAG OVER */
-
-uploadBox.addEventListener(
-'dragover',
-(e)=>{
-
-e.preventDefault();
-
-uploadBox.classList.add('dragover');
-
-}
-);
-
-/* DRAG LEAVE */
-
-uploadBox.addEventListener(
-'dragleave',
-()=>{
-
-uploadBox.classList.remove('dragover');
-
-}
-);
-
-/* DROP IMAGE */
-
-uploadBox.addEventListener(
-'drop',
-(e)=>{
-
-e.preventDefault();
-
-uploadBox.classList.remove('dragover');
-
-const file =
-e.dataTransfer.files[0];
-
-if(file){
-
-pastedImageFile = file;
-
-showPreview(file);
-
-}
-
-}
-);
-
-/* PASTE IMAGE */
-
-document.addEventListener(
-'paste',
-(e)=>{
-
-const items =
-e.clipboardData.items;
-
-for(let item of items){
-
-if(item.type.indexOf('image') !== -1){
-
-const file =
-item.getAsFile();
-
-pastedImageFile = file;
-
-showPreview(file);
-
-}
-
-}
-
-}
-);
-
-/* PREVIEW */
-
-function showPreview(file){
-
-if(!file) return;
-
-previewImage.src =
-URL.createObjectURL(file);
-
-previewImage.style.display = 'block';
-
-uploadBox.querySelector(
-'.upload-content'
-).style.display = 'none';
-
-}
-
+/* SAVE */
 
 document
 .getElementById('projectForm')
@@ -1309,44 +1095,15 @@ try{
 const id =
 document.getElementById('projectId').value;
 
-/* IMAGE UPLOAD */
-
-let imageUrl =
-'https://i.ibb.co/0jdbf75Y/image.png';
-
-const imageFile =
-pastedImageFile ||
-document.getElementById('projectImage').files[0];
-
-
-if(imageFile){
-
-const storageRef = ref(
-storage,
-'projects/' +
-Date.now() +
-'_' +
-imageFile.name
-);
-
-await uploadBytes(
-storageRef,
-imageFile
-);
-
-imageUrl =
-await getDownloadURL(storageRef);
-
-}
-
-
-
 const data = {
 
 name:
 document.getElementById('projectName').value.trim(),
-  
-image: imageUrl,
+
+image:
+document.getElementById('projectImage').value.trim()
+||
+'https://i.ibb.co/0jdbf75Y/image.png',
 
 stagingUrl:
 document.getElementById('stagingUrl').value.trim(),
