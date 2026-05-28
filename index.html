@@ -407,7 +407,9 @@ class="form-control"></textarea>
 
 </div>
 
-<button class="btn-main w-100">
+<button type="submit"
+id="submitBtn"
+class="btn-main w-100">
 
 Save Project
 
@@ -819,7 +821,7 @@ projectForm.addEventListener('submit', async(e)=>{
 e.preventDefault();
 
 const submitBtn =
-projectForm.querySelector('button[type="submit"]');
+document.getElementById('submitBtn');
 
 submitBtn.disabled = true;
 
