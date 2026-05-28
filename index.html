@@ -193,11 +193,17 @@ width:100%;
 </head>
 
 <body>
+<style>
+
+body{
+display:none;
+}
+
+</style>
+
 <script>
 
 const dashboardPassword = "Shubh";
-
-/* SESSION TIME = 1 MINUTE */
 
 const sessionTime = 1 * 60 * 1000;
 
@@ -206,19 +212,23 @@ JSON.parse(
 sessionStorage.getItem('dashboard_login')
 );
 
-/* CHECK SESSION */
+/* CHECK LOGIN */
+
+let allowAccess = false;
 
 if(
-!loginData ||
-(Date.now() - loginData.loginTime) > sessionTime
+loginData &&
+(Date.now() - loginData.loginTime) < sessionTime
 ){
+
+allowAccess = true;
+
+}else{
 
 sessionStorage.removeItem('dashboard_login');
 
 const enteredPassword =
 prompt("Enter Login Password");
-
-/* PASSWORD CHECK */
 
 if(enteredPassword === dashboardPassword){
 
@@ -229,9 +239,11 @@ loginTime: Date.now()
 })
 );
 
+allowAccess = true;
+
 }else{
 
-document.body.innerHTML = `
+document.write(`
 
 <div style="
 height:100vh;
@@ -248,7 +260,7 @@ padding:40px;
 border-radius:15px;
 box-shadow:0 5px 20px rgba(0,0,0,0.1);
 text-align:center;
-width:300px;
+width:320px;
 ">
 
 <h1 style="
@@ -266,16 +278,32 @@ Wrong Password
 
 </div>
 
-`;
+`);
 
-throw new Error("Access Blocked");
-
-}
+throw new Error("Blocked");
 
 }
 
+}
 
-/* AUTO EXPIRE AFTER 1 MINUTE */
+
+/* SHOW PAGE */
+
+if(allowAccess){
+
+document.addEventListener(
+'DOMContentLoaded',
+function(){
+
+document.body.style.display = 'block';
+
+}
+);
+
+}
+
+
+/* AUTO EXPIRE */
 
 setTimeout(()=>{
 
