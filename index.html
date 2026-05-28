@@ -197,31 +197,49 @@ width:100%;
 
 const dashboardPassword = "Shubh";
 
-const isLoggedIn =
-sessionStorage.getItem("dashboard_access");
+/* SESSION TIME = 1 MINUTE */
 
-if(isLoggedIn !== "true"){
+const sessionTime = 1 * 60 * 1000;
+
+const loginData =
+JSON.parse(
+sessionStorage.getItem('dashboard_login')
+);
+
+/* CHECK SESSION */
+
+if(
+!loginData ||
+(Date.now() - loginData.loginTime) > sessionTime
+){
+
+sessionStorage.removeItem('dashboard_login');
 
 const enteredPassword =
 prompt("Enter Login Password");
 
+/* PASSWORD CHECK */
+
 if(enteredPassword === dashboardPassword){
 
 sessionStorage.setItem(
-"dashboard_access",
-"true"
+'dashboard_login',
+JSON.stringify({
+loginTime: Date.now()
+})
 );
 
 }else{
 
 document.body.innerHTML = `
+
 <div style="
 height:100vh;
 display:flex;
 justify-content:center;
 align-items:center;
-font-family:Arial;
 background:#f1f5f9;
+font-family:Arial;
 ">
 
 <div style="
@@ -230,11 +248,15 @@ padding:40px;
 border-radius:15px;
 box-shadow:0 5px 20px rgba(0,0,0,0.1);
 text-align:center;
+width:300px;
 ">
 
-<h2 style="color:red;">
+<h1 style="
+color:red;
+margin-bottom:10px;
+">
 Access Denied
-</h2>
+</h1>
 
 <p>
 Wrong Password
@@ -243,6 +265,7 @@ Wrong Password
 </div>
 
 </div>
+
 `;
 
 throw new Error("Access Blocked");
@@ -251,8 +274,21 @@ throw new Error("Access Blocked");
 
 }
 
+
+/* AUTO EXPIRE AFTER 1 MINUTE */
+
+setTimeout(()=>{
+
+sessionStorage.removeItem('dashboard_login');
+
+alert('Session Expired');
+
+location.reload();
+
+}, sessionTime);
+
 </script>
-<div class="card-box">
+  <div class="card-box">
 
 <div class="notification-box">
 
