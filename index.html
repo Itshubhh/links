@@ -193,7 +193,65 @@ width:100%;
 </head>
 
 <body>
+<script>
 
+const dashboardPassword = "Shubh";
+
+const isLoggedIn =
+sessionStorage.getItem("dashboard_access");
+
+if(isLoggedIn !== "true"){
+
+const enteredPassword =
+prompt("Enter Login Password");
+
+if(enteredPassword === dashboardPassword){
+
+sessionStorage.setItem(
+"dashboard_access",
+"true"
+);
+
+}else{
+
+document.body.innerHTML = `
+<div style="
+height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+font-family:Arial;
+background:#f1f5f9;
+">
+
+<div style="
+background:white;
+padding:40px;
+border-radius:15px;
+box-shadow:0 5px 20px rgba(0,0,0,0.1);
+text-align:center;
+">
+
+<h2 style="color:red;">
+Access Denied
+</h2>
+
+<p>
+Wrong Password
+</p>
+
+</div>
+
+</div>
+`;
+
+throw new Error("Access Blocked");
+
+}
+
+}
+
+</script>
 <div class="card-box">
 
 <div class="notification-box">
