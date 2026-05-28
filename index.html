@@ -781,7 +781,7 @@ if(confirm('Delete Project?')){
 
 await deleteDoc(doc(db,'projects',id));
 
-alert('Project Deleted');
+
 
 loadProjects();
 
@@ -827,14 +827,14 @@ created_at:new Date()
 }
 );
 
-alert('Project Updated');
+
 
 }else{
 
 await addDoc(projectRef,data);
 
-alert('Project Added');
-await addDoc(
+
+  await addDoc(
 collection(db,'notifications'),
 {
 title:'New Project Added',
