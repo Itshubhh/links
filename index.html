@@ -813,15 +813,26 @@ alert('Delete Failed');
 
 
 /* SAVE */
-
 /* SAVE */
 
-projectForm.addEventListener('submit', async(e)=>{
+document
+.getElementById('projectForm')
+.addEventListener('submit', async function(e){
 
 e.preventDefault();
 
 const submitBtn =
 document.getElementById('submitBtn');
+
+/* SAFETY CHECK */
+
+if(!submitBtn){
+
+console.log('Submit button not found');
+
+return;
+
+}
 
 submitBtn.disabled = true;
 
@@ -833,26 +844,33 @@ submitBtn.innerHTML =
 
 try{
 
-const id = projectId.value;
+const id =
+document.getElementById('projectId').value;
 
 const data = {
 
-name: projectName.value.trim(),
+name:
+document.getElementById('projectName').value.trim(),
 
-image: projectImage.value.trim(),
+image:
+document.getElementById('projectImage').value.trim(),
 
-stagingUrl: stagingUrl.value.trim(),
+stagingUrl:
+document.getElementById('stagingUrl').value.trim(),
 
-productionUrl: productionUrl.value.trim(),
+productionUrl:
+document.getElementById('productionUrl').value.trim(),
 
-description: projectDesc.value.trim(),
+description:
+document.getElementById('projectDesc').value.trim(),
 
-status: projectStatus.value
+status:
+document.getElementById('projectStatus').value
 
 };
 
 
-/* CHECK DUPLICATE PROJECT */
+/* CHECK DUPLICATE */
 
 const snapshot = await getDocs(projectRef);
 
@@ -895,7 +913,10 @@ return;
 
 if(id){
 
-await updateDoc(doc(db,'projects',id),data);
+await updateDoc(
+doc(db,'projects',id),
+data
+);
 
 await addDoc(
 collection(db,'notifications'),
@@ -908,7 +929,7 @@ created_at:new Date()
 
 }else{
 
-/* ADD */
+/* INSERT */
 
 await addDoc(projectRef,data);
 
@@ -923,13 +944,13 @@ created_at:new Date()
 
 }
 
-projectForm.reset();
+document.getElementById('projectForm').reset();
 
-projectId.value='';
+document.getElementById('projectId').value='';
 
 modal.hide();
 
-loadProjects();
+await loadProjects();
 
 alert('Project Saved Successfully');
 
@@ -937,7 +958,7 @@ alert('Project Saved Successfully');
 
 console.log(error);
 
-alert('Something went wrong');
+alert(error.message);
 
 }finally{
 
