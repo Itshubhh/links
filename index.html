@@ -775,15 +775,35 @@ modal.show();
 
 /* DELETE */
 
+/* DELETE */
+
 window.deleteProject = async function(id){
 
-if(confirm('Delete Project?')){
+const confirmText = prompt(
+"Enter Password for delete this project"
+);
+
+if(confirmText !== 'Shiv'){
+
+alert('Wrong Password. Project not deleted.');
+
+return;
+
+}
+
+try{
 
 await deleteDoc(doc(db,'projects',id));
 
-
+alert('Project Deleted Successfully');
 
 loadProjects();
+
+}catch(error){
+
+console.log(error);
+
+alert('Delete Failed');
 
 }
 
