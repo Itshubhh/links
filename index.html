@@ -9,7 +9,7 @@
 content="width=device-width, initial-scale=1.0">
 
 <title>
-Project Dashboard
+Secure Project Dashboard
 </title>
 
 <link rel="stylesheet"
@@ -37,6 +37,125 @@ font-family:Arial;
 padding:20px;
 font-size:13px;
 }
+
+/* DASHBOARD HIDE */
+
+#mainDashboard{
+display:none;
+}
+
+/* LOGIN OVERLAY */
+
+#loginOverlay{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:linear-gradient(
+135deg,
+#0f172a,
+#1e293b
+);
+display:flex;
+justify-content:center;
+align-items:center;
+z-index:999999;
+padding:20px;
+}
+
+/* LOGIN CARD */
+
+.login-card{
+width:100%;
+max-width:420px;
+background:white;
+border-radius:24px;
+overflow:hidden;
+box-shadow:
+0 20px 60px rgba(0,0,0,0.25);
+animation:popup .35s ease;
+}
+
+@keyframes popup{
+
+from{
+transform:translateY(30px) scale(.9);
+opacity:0;
+}
+
+to{
+transform:translateY(0px) scale(1);
+opacity:1;
+}
+
+}
+
+.login-header{
+background:#2563eb;
+padding:35px 25px;
+text-align:center;
+color:white;
+}
+
+.login-header i{
+font-size:55px;
+margin-bottom:15px;
+}
+
+.login-body{
+padding:30px;
+}
+
+.login-input{
+height:52px;
+border-radius:14px;
+font-size:15px;
+padding-left:15px;
+border:1px solid #dbe4f0;
+}
+
+.login-input:focus{
+box-shadow:none;
+border-color:#2563eb;
+}
+
+.login-btn{
+height:52px;
+border:none;
+border-radius:14px;
+background:#2563eb;
+color:white;
+font-size:15px;
+font-weight:600;
+width:100%;
+transition:.3s;
+}
+
+.login-btn:hover{
+background:#1d4ed8;
+}
+
+.login-error{
+display:none;
+background:#fee2e2;
+color:#dc2626;
+padding:12px;
+border-radius:12px;
+font-size:13px;
+margin-top:15px;
+text-align:center;
+font-weight:600;
+}
+
+.login-footer{
+text-align:center;
+font-size:12px;
+color:#64748b;
+margin-top:20px;
+}
+
+/* DASHBOARD */
 
 .card-box{
 background:white;
@@ -157,10 +276,6 @@ border-radius:10px;
 height:42px;
 }
 
-textarea.form-control{
-height:auto;
-}
-
 .notification-box{
 background:#eff6ff;
 border:1px solid #bfdbfe;
@@ -171,136 +286,29 @@ margin-bottom:15px;
 color:#1e3a8a;
 }
 
-@media(max-width:768px){
-
-.topbar{
-flex-direction:column;
-align-items:stretch;
-}
-
-.search-input{
-width:100%;
-}
-
-.btn-main{
-width:100%;
-}
-
-}
-
 </style>
 
 </head>
 
 <body>
-<style>
-
-html{
-display:none;
-}
-
-/* LOGIN POPUP */
-
-#loginOverlay{
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100%;
-background:rgba(15,23,42,0.75);
-z-index:999999;
-display:flex;
-justify-content:center;
-align-items:center;
-backdrop-filter:blur(5px);
-}
-
-#loginCard{
-width:100%;
-max-width:400px;
-background:white;
-border-radius:20px;
-overflow:hidden;
-box-shadow:0 10px 40px rgba(0,0,0,0.2);
-animation:popup .3s ease;
-}
-
-@keyframes popup{
-
-from{
-transform:scale(.8);
-opacity:0;
-}
-
-to{
-transform:scale(1);
-opacity:1;
-}
-
-}
-
-.login-header{
-background:#2563eb;
-padding:25px;
-text-align:center;
-color:white;
-}
-
-.login-header i{
-font-size:45px;
-margin-bottom:10px;
-}
-
-.login-body{
-padding:30px;
-}
-
-.login-input{
-height:50px;
-border-radius:12px;
-font-size:14px;
-}
-
-.login-btn{
-height:50px;
-border:none;
-border-radius:12px;
-background:#2563eb;
-color:white;
-font-weight:600;
-width:100%;
-transition:.3s;
-font-size:15px;
-}
-
-.login-btn:hover{
-background:#1d4ed8;
-}
-
-.login-error{
-font-size:13px;
-color:red;
-display:none;
-margin-top:12px;
-text-align:center;
-font-weight:600;
-}
-
-</style>
 
 <!-- LOGIN POPUP -->
 
 <div id="loginOverlay">
 
-<div id="loginCard">
+<div class="login-card">
 
 <div class="login-header">
 
-<i class="fa fa-lock"></i>
+<i class="fa fa-shield-halved"></i>
 
-<h4 class="mb-0">
-Secure Dashboard Login
-</h4>
+<h3 class="mb-1">
+Secure Dashboard
+</h3>
+
+<p class="mb-0">
+Authentication Required
+</p>
 
 </div>
 
@@ -317,7 +325,9 @@ placeholder="Enter Password"
 id="loginBtn"
 class="login-btn">
 
-Login
+<i class="fa fa-lock"></i>
+
+Login Dashboard
 
 </button>
 
@@ -329,126 +339,30 @@ Wrong Password
 
 </div>
 
-</div>
+<div class="login-footer">
+
+Session expires in 1 minute
 
 </div>
 
 </div>
 
-<script>
+</div>
 
-/* PASSWORD */
+</div>
 
-const dashboardPassword = "Shubh";
+<!-- DASHBOARD -->
 
-/* SESSION TIME 1 MINUTE */
+<div id="mainDashboard">
 
-const sessionTime = 60000;
-
-/* CHECK SESSION */
-
-const loginData =
-JSON.parse(
-sessionStorage.getItem('dashboard_login')
-);
-
-let validSession = false;
-
-if(
-loginData &&
-(Date.now() - loginData.loginTime) < sessionTime
-){
-
-validSession = true;
-
-}
-
-/* SHOW PAGE IF SESSION ACTIVE */
-
-if(validSession){
-
-document.documentElement.style.display = 'block';
-
-document.addEventListener(
-'DOMContentLoaded',
-()=>{
-
-const overlay =
-document.getElementById('loginOverlay');
-
-if(overlay){
-
-overlay.remove();
-
-}
-
-}
-);
-
-}else{
-
-/* SHOW LOGIN POPUP */
-
-document.documentElement.style.display = 'block';
-
-document
-.getElementById('loginBtn')
-.addEventListener('click',()=>{
-
-const password =
-document
-.getElementById('loginPassword')
-.value;
-
-if(password === dashboardPassword){
-
-sessionStorage.setItem(
-'dashboard_login',
-JSON.stringify({
-loginTime: Date.now()
-})
-);
-
-document
-.getElementById('loginOverlay')
-.remove();
-
-location.reload();
-
-}else{
-
-document
-.getElementById('loginError')
-.style.display = 'block';
-
-}
-
-});
-
-}
-
-/* AUTO EXPIRE */
-
-setTimeout(()=>{
-
-sessionStorage.removeItem(
-'dashboard_login'
-);
-
-alert('Session Expired');
-
-location.reload();
-
-}, sessionTime);
-
-</script>
-  <div class="card-box">
+<div class="card-box">
 
 <div class="notification-box">
 
 <i class="fa fa-bell"></i>
 
 Projects
+
 </div>
 
 <div class="topbar">
@@ -458,9 +372,6 @@ Projects
 <h3>
 Project Dashboard
 </h3>
-
-<p class="text-muted mb-0">
-</p>
 
 </div>
 
@@ -520,15 +431,56 @@ class="table table-bordered align-middle">
 <th>Project</th>
 <th>Description</th>
 <th>Status</th>
-<th>Staging</th>
-<th>Production</th>
 <th>Actions</th>
 
 </tr>
 
 </thead>
 
-<tbody id="tableBody"></tbody>
+<tbody id="tableBody">
+
+<tr>
+
+<td>1</td>
+
+<td>
+<img src="https://i.ibb.co/0jdbf75Y/image.png"
+class="project-img">
+</td>
+
+<td>
+<b>Demo Project</b>
+</td>
+
+<td>
+Professional Dashboard
+</td>
+
+<td>
+<span class="status active">
+Active
+</span>
+</td>
+
+<td>
+
+<button class="action-btn edit-btn">
+
+<i class="fa fa-pen"></i>
+
+</button>
+
+<button class="action-btn delete-btn">
+
+<i class="fa fa-trash"></i>
+
+</button>
+
+</td>
+
+</tr>
+
+</tbody>
 
 </table>
 
@@ -536,7 +488,9 @@ class="table table-bordered align-middle">
 
 </div>
 
-<!-- MODAL -->
+</div>
+
+<!-- ADD PROJECT MODAL -->
 
 <div class="modal fade"
 id="projectModal">
@@ -548,7 +502,7 @@ id="projectModal">
 <div class="modal-header">
 
 <h5>
-Add / Update Project
+Add Project
 </h5>
 
 <button class="btn-close btn-close-white"
@@ -558,10 +512,7 @@ data-bs-dismiss="modal"></button>
 
 <div class="modal-body">
 
-<form id="projectForm">
-
-<input type="hidden"
-id="projectId">
+<form>
 
 <div class="row">
 
@@ -572,9 +523,7 @@ Project Name
 </label>
 
 <input type="text"
-id="projectName"
-class="form-control"
-required>
+class="form-control">
 
 </div>
 
@@ -585,79 +534,13 @@ Image URL
 </label>
 
 <input type="text"
-id="projectImage"
-class="form-control"
-placeholder="Enter Image URL">
-
-</div>
-
-
-<div class="col-md-6 mb-3">
-
-<label>
-Staging URL
-</label>
-
-<input type="text"
-id="stagingUrl"
 class="form-control">
 
 </div>
 
-<div class="col-md-6 mb-3">
-
-<label>
-Production URL
-</label>
-
-<input type="text"
-id="productionUrl"
-class="form-control">
-
 </div>
 
-
-<div class="col-md-6 mb-3">
-
-<label>
-Status
-</label>
-
-<select id="projectStatus"
-class="form-select">
-
-<option>
-Active
-</option>
-
-<option>
-Pending
-</option>
-
-<option>
-Completed
-</option>
-
-</select>
-
-</div>
-
-<div class="col-12 mb-3">
-
-<label>
-Description
-</label>
-
-<textarea id="projectDesc"
-class="form-control"></textarea>
-
-</div>
-
-</div>
-
-<button type="submit"
-id="submitBtn"
-class="btn-main w-100">
+<button class="btn-main w-100">
 
 Save Project
 
@@ -673,585 +556,146 @@ Save Project
 
 </div>
 
-<script type="module">
+<script>
 
-import { initializeApp }
-from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
+/* PASSWORD */
 
-import {
-getFirestore,
-collection,
-addDoc,
-getDocs,
-deleteDoc,
-updateDoc,
-doc,
-getDoc,
-onSnapshot
-}
-from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
+const dashboardPassword = "Shubh";
 
-import {
-getMessaging,
-getToken,
-onMessage
-}
-from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-messaging.js';
+/* 1 MINUTE */
 
+const sessionTime = 60000;
 
-/* FIREBASE CONFIG */
+/* SESSION */
 
-const firebaseConfig = {
-
-apiKey: 'AIzaSyAlOrIXWqq1XEe1ya6UYx_csH6ckvo_x84',
-
-authDomain: 'project-dashboard-ee104.firebaseapp.com',
-
-projectId: 'project-dashboard-ee104',
-
-storageBucket: 'project-dashboard-ee104.firebasestorage.app',
-
-messagingSenderId: '462837501926',
-
-appId: '1:462837501926:web:aed16fc192890d16115027',
-
-measurementId: 'G-0FDEWTYKB2'
-
-};
-
-const app = initializeApp(firebaseConfig);
-
-const db = getFirestore(app);
-
-const messaging = getMessaging(app);
-
-const projectRef = collection(db,'projects');
-
-const modal =
-new bootstrap.Modal(
-document.getElementById('projectModal')
+const loginData =
+JSON.parse(
+sessionStorage.getItem(
+'dashboard_login'
+)
 );
 
-let table;
+let validSession = false;
 
-
-
-
-/* NOTIFICATION */
-
-async function initNotification(){
-
-try{
-
-const permission =
-await Notification.requestPermission();
-
-const registration =
-await navigator.serviceWorker.register(
-'/links/firebase-messaging-sw.js'
-);
-
-const token =
-await getToken(messaging,{
-
-vapidKey:
-'BHxU6wPSAJy1GjtgwERuZRrMHU3AFlaZxaWRgkTsJkYiHZ7QeNAjsXmLrwx8KG-527JacIAtBpSu_-CQrJ4lgBk',
-
-serviceWorkerRegistration:
-registration
-
-});
-
-console.log('FCM TOKEN:',token);
-
-
-/* SAVE TOKEN */
-
-await addDoc(
-collection(db,'fcm_tokens'),
-{
-token: token,
-created_at: new Date()
-}
-);
-
-
-
-
-}catch(error){
-
-console.log(error);
-
-}
-
-}
-
-initNotification();
-
-listenNotifications();
-  
-/* FOREGROUND MESSAGE */
-
-onMessage(messaging,(payload)=>{
-
-console.log(payload);
-
-new Notification(
-
-payload.notification.title,
-
-{
-body: payload.notification.body,
-icon: 'https://cdn-icons-png.flaticon.com/512/1827/1827392.png'
-}
-
-);
-
-});
-
-
-function listenNotifications(){
-
-const notificationRef =
-collection(db,'notifications');
-
-onSnapshot(notificationRef,(snapshot)=>{
-
-snapshot.docChanges().forEach((change)=>{
-
-if(change.type === 'added'){
-
-const data = change.doc.data();
-
-if(Notification.permission === 'granted'){
-
-new Notification(
-
-data.title,
-
-{
-body:data.body,
-icon:'https://cdn-icons-png.flaticon.com/512/1827/1827392.png'
-}
-
-);
-
-}
-
-}
-
-});
-
-});
-
-}
-
-/* LOAD PROJECTS */
-
-async function loadProjects() {
-
-const snapshot =
-await getDocs(projectRef);
-
-const tbody =
-document.getElementById('tableBody');
-
-
-/* DESTROY DATATABLE */
-
-if ($.fn.DataTable.isDataTable('#projectTable')) {
-
-$('#projectTable').DataTable().destroy();
-
-}
-
-
-/* CLEAR TABLE */
-
-tbody.innerHTML = '';
-
-let count = 1;
-
-
-/* APPEND ROWS */
-
-snapshot.forEach((item) => {
-
-const project = item.data();
-
-let statusClass = 'active';
-
-if (project.status === 'Pending') {
-
-statusClass = 'pending';
-
-}
-
-if (project.status === 'Completed') {
-
-statusClass = 'completed';
-
-}
-
-tbody.innerHTML += `
-
-<tr>
-
-<td>${count++}</td>
-
-<td>
-
-<img src="${project.image}"
-class="project-img">
-
-</td>
-
-<td>
-
-<b>${project.name}</b>
-
-</td>
-
-<td>
-
-${project.description || '-'}
-
-</td>
-
-<td>
-
-<span class="status ${statusClass}">
-${project.status}
-</span>
-
-</td>
-
-<td>
-
-<a href="${project.stagingUrl}"
-target="_blank"
-class="visit-btn">
-
-Staging
-
-</a>
-
-</td>
-
-<td>
-
-<a href="${project.productionUrl}"
-target="_blank"
-class="visit-btn">
-
-Production
-
-</a>
-
-</td>
-
-<td>
-
-<button class="action-btn edit-btn"
-onclick="editProject('${item.id}')">
-
-<i class="fa fa-pen"></i>
-
-</button>
-
-<button class="action-btn delete-btn"
-onclick="deleteProject('${item.id}')">
-
-<i class="fa fa-trash"></i>
-
-</button>
-
-</td>
-
-</tr>
-
-`;
-
-});
-
-
-/* REINITIALIZE DATATABLE */
-
-table = $('#projectTable').DataTable({
-
-responsive: true,
-
-pageLength: 10,
-
-destroy: true
-
-});
-
-}
-
-
-/* EDIT */
-
-window.editProject = async function(id){
-
-const ref = doc(db,'projects',id);
-
-const snap = await getDoc(ref);
-
-if(snap.exists()){
-
-const data = snap.data();
-
-projectId.value = id;
-
-projectName.value = data.name;
-
-projectImage.value = data.image;
-
-stagingUrl.value = data.stagingUrl;
-
-productionUrl.value = data.productionUrl;
-
-projectDesc.value = data.description;
-
-projectStatus.value = data.status;
-
-modal.show();
-
-}
-
-}
-
-
-/* DELETE */
-
-/* DELETE */
-
-window.deleteProject = async function(id){
-
-const confirmText = prompt(
-"Enter Password for delete this project"
-);
-
-if(confirmText !== 'Shiv'){
-
-alert('Wrong Password. Project not deleted.');
-
-return;
-
-}
-
-try{
-
-await deleteDoc(doc(db,'projects',id));
-
-alert('Project Deleted Successfully');
-
-loadProjects();
-
-}catch(error){
-
-console.log(error);
-
-alert('Delete Failed');
-
-}
-
-}
-
-
-/* SAVE */
-/* SAVE */
-
-document
-.getElementById('projectForm')
-.addEventListener('submit', async function(e){
-
-e.preventDefault();
-
-const submitBtn =
-document.getElementById('submitBtn');
-
-/* SAFETY CHECK */
-
-if(!submitBtn){
-
-console.log('Submit button not found');
-
-return;
-
-}
-
-submitBtn.disabled = true;
-
-const oldBtnText = submitBtn.innerHTML;
-
-submitBtn.innerHTML =
-`<span class="spinner-border spinner-border-sm"></span>
- Saving...`;
-
-try{
-
-const id =
-document.getElementById('projectId').value;
-
-const data = {
-
-name:
-document.getElementById('projectName').value.trim(),
-
-image:
-document.getElementById('projectImage').value.trim()
-||
-'https://i.ibb.co/0jdbf75Y/image.png',
-
-stagingUrl:
-document.getElementById('stagingUrl').value.trim(),
-
-productionUrl:
-document.getElementById('productionUrl').value.trim(),
-
-description:
-document.getElementById('projectDesc').value.trim(),
-
-status:
-document.getElementById('projectStatus').value
-
-};
-
-
-/* CHECK DUPLICATE */
-
-const snapshot = await getDocs(projectRef);
-
-let duplicateFound = false;
-
-snapshot.forEach((docItem)=>{
-
-const project = docItem.data();
+/* CHECK SESSION */
 
 if(
-
-project.name.toLowerCase() === data.name.toLowerCase()
-
-&&
-
-docItem.id !== id
-
+loginData &&
+(Date.now() - loginData.loginTime)
+< sessionTime
 ){
 
-duplicateFound = true;
+validSession = true;
 
 }
 
-});
+/* OPEN DASHBOARD */
 
-if(duplicateFound){
+function openDashboard(){
 
-alert('Project already exists');
+document
+.getElementById(
+'loginOverlay'
+)
+.style.display = 'none';
 
-submitBtn.disabled = false;
-
-submitBtn.innerHTML = oldBtnText;
-
-return;
+document
+.getElementById(
+'mainDashboard'
+)
+.style.display = 'block';
 
 }
 
+/* VALID SESSION */
 
-/* UPDATE */
+if(validSession){
 
-if(id){
-
-await updateDoc(
-doc(db,'projects',id),
-data
-);
-
-await addDoc(
-collection(db,'notifications'),
-{
-title:'Project Updated',
-body:data.name,
-created_at:new Date()
-}
-);
+openDashboard();
 
 }else{
 
-/* INSERT */
+document
+.getElementById(
+'loginBtn'
+)
+.addEventListener(
+'click',
+()=>{
 
-await addDoc(projectRef,data);
+const password =
+document
+.getElementById(
+'loginPassword'
+)
+.value;
 
-await addDoc(
-collection(db,'notifications'),
-{
-title:'New Project Added',
-body:data.name,
-created_at:new Date()
+if(password === dashboardPassword){
+
+sessionStorage.setItem(
+'dashboard_login',
+JSON.stringify({
+loginTime: Date.now()
+})
+);
+
+openDashboard();
+
+}else{
+
+document
+.getElementById(
+'loginError'
+)
+.style.display = 'block';
+
+}
+
+}
+);
+
+document
+.getElementById(
+'loginPassword'
+)
+.addEventListener(
+'keypress',
+function(e){
+
+if(e.key === 'Enter'){
+
+document
+.getElementById(
+'loginBtn'
+)
+.click();
+
+}
+
 }
 );
 
 }
 
-document.getElementById('projectForm').reset();
+/* AUTO EXPIRE */
 
-document.getElementById('projectId').value='';
+setTimeout(()=>{
 
-modal.hide();
+sessionStorage.removeItem(
+'dashboard_login'
+);
 
-await loadProjects();
+location.reload();
 
-alert('Project Saved Successfully');
+}, sessionTime);
 
-}catch(error){
+/* DATATABLE */
 
-console.log(error);
+$(document).ready(function(){
 
-alert(error.message);
-
-}finally{
-
-submitBtn.disabled = false;
-
-submitBtn.innerHTML = oldBtnText;
-
-}
+$('#projectTable').DataTable();
 
 });
-
-
-/* SEARCH */
-
-searchInput.addEventListener('keyup',function(){
-
-if(table){
-
-table.search(this.value).draw();
-
-}
-
-});
-
-
-/* FILTER */
-
-statusFilter.addEventListener('change',function(){
-
-if(table){
-
-table.column(4)
-.search(this.value)
-.draw();
-
-}
-
-});
-
-
-/* INITIAL LOAD */
-
-loadProjects();
 
 </script>
 
