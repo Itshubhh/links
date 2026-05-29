@@ -1,205 +1,191 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
 
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
 
-<title>WhatsApp Chat</title>
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
 
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<title>
+Project Dashboard
+</title>
+
+<link rel="stylesheet"
+href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+<link rel="stylesheet"
+href="https://cdn.datatables.net/1.13.8/css/dataTables.bootstrap5.min.css">
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<script src="https://cdn.datatables.net/1.13.8/js/jquery.dataTables.min.js"></script>
+
+<script src="https://cdn.datatables.net/1.13.8/js/dataTables.bootstrap5.min.js"></script>
 
 <style>
 
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:Arial;
-}
-
 body{
-background:#111b21;
-height:100vh;
-overflow:hidden;
+background:#f1f5f9;
+font-family:Arial;
+padding:20px;
+font-size:13px;
 }
 
-.chat-wrapper{
+.card-box{
+background:white;
+padding:20px;
+border-radius:15px;
+box-shadow:0px 5px 20px rgba(0,0,0,0.05);
+}
+
+.topbar{
 display:flex;
-height:100vh;
+justify-content:space-between;
+align-items:center;
+flex-wrap:wrap;
+gap:10px;
+margin-bottom:20px;
 }
 
-/* LEFT */
-
-.sidebar{
-width:350px;
-background:#202c33;
-border-right:1px solid #2a3942;
-display:flex;
-flex-direction:column;
-}
-
-.sidebar-header{
-padding:15px;
-background:#202c33;
+.btn-main{
+background:#2563eb;
 color:white;
-font-weight:bold;
-border-bottom:1px solid #2a3942;
-}
-
-.search-box{
-padding:10px;
-background:#111b21;
-}
-
-.search-box input{
-width:100%;
-padding:10px;
 border:none;
-border-radius:8px;
-background:#2a3942;
-color:white;
+padding:10px 16px;
+border-radius:10px;
+font-size:12px;
 }
 
-.user-list{
-flex:1;
-overflow:auto;
+.search-input,
+.filter-select{
+height:40px;
+border:1px solid #dbe4f0;
+border-radius:10px;
+padding:0px 10px;
+font-size:12px;
 }
 
-.user{
-display:flex;
-align-items:center;
-padding:12px;
-cursor:pointer;
-border-bottom:1px solid #2a3942;
-}
-
-.user:hover{
-background:#2a3942;
-}
-
-.avatar{
-width:45px;
-height:45px;
-border-radius:50%;
-background:#25d366;
-display:flex;
-align-items:center;
-justify-content:center;
-color:white;
-font-weight:bold;
-margin-right:10px;
-}
-
-.user-info{
-flex:1;
-color:white;
-}
-
-.online-dot{
-width:10px;
-height:10px;
-background:#25d366;
-border-radius:50%;
-}
-
-/* RIGHT */
-
-.chat-area{
-flex:1;
-display:flex;
-flex-direction:column;
-background:#0b141a;
-}
-
-.chat-header{
-height:65px;
-background:#202c33;
-display:flex;
-align-items:center;
-padding:0 20px;
-color:white;
-}
-
-.chat-header .avatar{
-margin-right:10px;
+.project-img{
+width:55px;
+height:55px;
+border-radius:10px;
+object-fit:cover;
 }
 
 .status{
-font-size:12px;
-color:#8696a0;
-}
-
-.chat-body{
-flex:1;
-padding:20px;
-overflow:auto;
-background:url('https://i.imgur.com/lQq9l7G.png');
-}
-
-.message-row{
-display:flex;
-margin-bottom:10px;
-}
-
-.message-row.me{
-justify-content:flex-end;
-}
-
-.message{
-max-width:65%;
-padding:10px;
-border-radius:8px;
-position:relative;
-}
-
-.me .message{
-background:#005c4b;
-color:white;
-}
-
-.other .message{
-background:#202c33;
-color:white;
-}
-
-.time{
+padding:5px 12px;
+border-radius:20px;
 font-size:11px;
-opacity:.7;
-text-align:right;
-margin-top:5px;
-}
-
-.chat-footer{
-padding:10px;
-background:#202c33;
-display:flex;
-gap:10px;
-}
-
-.chat-footer input{
-flex:1;
-padding:12px;
-border:none;
-border-radius:8px;
-background:#2a3942;
-color:white;
-}
-
-.send-btn{
-background:#25d366;
-border:none;
-padding:0 25px;
-border-radius:8px;
-color:white;
 font-weight:bold;
 }
 
-.typing{
-padding:0 20px;
-color:#25d366;
+.active{
+background:#dcfce7;
+color:#166534;
+}
+
+.pending{
+background:#fef3c7;
+color:#92400e;
+}
+
+.completed{
+background:#dbeafe;
+color:#1d4ed8;
+}
+
+.action-btn{
+width:32px;
+height:32px;
+border:none;
+border-radius:8px;
+color:white;
+font-size:11px;
+}
+
+.edit-btn{
+background:#f59e0b;
+}
+
+.delete-btn{
+background:#ef4444;
+}
+
+.visit-btn{
+background:#2563eb;
+color:white;
+padding:6px 10px;
+border-radius:8px;
+text-decoration:none;
+font-size:11px;
+}
+
+.table thead{
+background:#111827;
+color:white;
+}
+
+.table thead th{
 font-size:12px;
-height:20px;
+}
+
+.table tbody td{
+font-size:12px;
+vertical-align:middle;
+}
+
+.modal-content{
+border-radius:15px;
+}
+
+.modal-header{
+background:#2563eb;
+color:white;
+}
+
+.form-control,
+.form-select{
+font-size:12px;
+border-radius:10px;
+height:42px;
+}
+
+textarea.form-control{
+height:auto;
+}
+
+.notification-box{
+background:#eff6ff;
+border:1px solid #bfdbfe;
+padding:10px;
+border-radius:10px;
+font-size:12px;
+margin-bottom:15px;
+color:#1e3a8a;
+}
+
+@media(max-width:768px){
+
+.topbar{
+flex-direction:column;
+align-items:stretch;
+}
+
+.search-input{
+width:100%;
+}
+
+.btn-main{
+width:100%;
+}
+
 }
 
 </style>
@@ -207,107 +193,477 @@ height:20px;
 </head>
 
 <body>
+<style>
 
-<div class="chat-wrapper">
 
-<!-- LEFT -->
 
-<div class="sidebar">
+/* LOGIN POPUP */
 
-<div class="sidebar-header">
-WhatsApp Firebase
+#loginOverlay{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(15,23,42,0.75);
+z-index:999999;
+display:flex;
+justify-content:center;
+align-items:center;
+backdrop-filter:blur(5px);
+}
+
+#loginCard{
+width:100%;
+max-width:400px;
+background:white;
+border-radius:20px;
+overflow:hidden;
+box-shadow:0 10px 40px rgba(0,0,0,0.2);
+animation:popup .3s ease;
+}
+
+@keyframes popup{
+
+from{
+transform:scale(.8);
+opacity:0;
+}
+
+to{
+transform:scale(1);
+opacity:1;
+}
+
+}
+
+.login-header{
+background:#2563eb;
+padding:25px;
+text-align:center;
+color:white;
+}
+
+.login-header i{
+font-size:45px;
+margin-bottom:10px;
+}
+
+.login-body{
+padding:30px;
+}
+
+.login-input{
+height:50px;
+border-radius:12px;
+font-size:14px;
+}
+
+.login-btn{
+height:50px;
+border:none;
+border-radius:12px;
+background:#2563eb;
+color:white;
+font-weight:600;
+width:100%;
+transition:.3s;
+font-size:15px;
+}
+
+.login-btn:hover{
+background:#1d4ed8;
+}
+
+.login-error{
+font-size:13px;
+color:red;
+display:none;
+margin-top:12px;
+text-align:center;
+font-weight:600;
+}
+
+</style>
+
+<!-- LOGIN POPUP -->
+
+<div id="loginOverlay">
+
+<div id="loginCard">
+
+<div class="login-header">
+
+<i class="fa fa-lock"></i>
+
+<h4 class="mb-0">
+Secure Dashboard Login
+</h4>
+
 </div>
 
-<div class="search-box">
+<div class="login-body">
 
 <input
-type="text"
-placeholder="Search User">
-
-</div>
-
-<div class="user-list">
-
-<div class="user">
-
-<div class="avatar">
-S
-</div>
-
-<div class="user-info">
-
-<div>
-Shubham
-</div>
-
-<small>
-Online
-</small>
-
-</div>
-
-<div class="online-dot"></div>
-
-</div>
-
-</div>
-
-</div>
-
-<!-- RIGHT -->
-
-<div class="chat-area">
-
-<div class="chat-header">
-
-<div class="avatar">
-S
-</div>
-
-<div>
-
-<div id="chatUser">
-Shubham
-</div>
-
-<div
-class="status"
-id="userStatus">
-
-Online
-
-</div>
-
-</div>
-
-</div>
-
-<div
-class="typing"
-id="typingBox">
-
-</div>
-
-<div
-class="chat-body"
-id="chatBox">
-
-</div>
-
-<div class="chat-footer">
-
-<input
-type="text"
-id="message"
-placeholder="Type message">
+type="password"
+id="loginPassword"
+class="form-control login-input mb-3"
+placeholder="Enter Password"
+>
 
 <button
-class="send-btn"
-onclick="sendMessage()">
+id="loginBtn"
+class="login-btn">
 
-Send
+Login
 
 </button>
+
+<div
+id="loginError"
+class="login-error">
+
+Wrong Password
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+/* PASSWORD */
+
+const dashboardPassword = "Shubh";
+
+/* SESSION TIME 1 MINUTE */
+
+const sessionTime = 1800000;
+
+/* CHECK SESSION */
+
+const loginData =
+JSON.parse(
+sessionStorage.getItem('dashboard_login')
+);
+
+let validSession = false;
+
+if(
+loginData &&
+(Date.now() - loginData.loginTime) < sessionTime
+){
+
+validSession = true;
+
+}
+
+/* SHOW PAGE IF SESSION ACTIVE */
+
+if(validSession){
+
+document.documentElement.style.display = 'block';
+
+document.addEventListener(
+'DOMContentLoaded',
+()=>{
+
+const overlay =
+document.getElementById('loginOverlay');
+
+if(overlay){
+
+overlay.remove();
+
+}
+
+}
+);
+
+}else{
+
+/* SHOW LOGIN POPUP */
+
+document.documentElement.style.display = 'block';
+
+document
+.getElementById('loginBtn')
+.addEventListener('click',()=>{
+
+const password =
+document
+.getElementById('loginPassword')
+.value;
+
+if(password === dashboardPassword){
+
+sessionStorage.setItem(
+'dashboard_login',
+JSON.stringify({
+loginTime: Date.now()
+})
+);
+
+document
+.getElementById('loginOverlay')
+.remove();
+
+location.reload();
+
+}else{
+
+document
+.getElementById('loginError')
+.style.display = 'block';
+
+}
+
+});
+
+}
+
+/* AUTO EXPIRE */
+
+setTimeout(()=>{
+
+sessionStorage.removeItem(
+'dashboard_login'
+);
+
+alert('Session Expired');
+
+location.reload();
+
+}, sessionTime);
+
+</script>
+  <div class="card-box">
+
+<div class="notification-box">
+
+<i class="fa fa-bell"></i>
+
+Projects
+</div>
+
+<div class="topbar">
+
+<div>
+
+<h3>
+Project Dashboard
+</h3>
+
+<p class="text-muted mb-0">
+</p>
+
+</div>
+
+<div class="d-flex gap-2 flex-wrap">
+
+<input type="text"
+id="searchInput"
+class="search-input"
+placeholder="Search">
+
+<select id="statusFilter"
+class="filter-select">
+
+<option value="">
+All Status
+</option>
+
+<option value="Active">
+Active
+</option>
+
+<option value="Pending">
+Pending
+</option>
+
+<option value="Completed">
+Completed
+</option>
+
+</select>
+
+<button class="btn-main"
+data-bs-toggle="modal"
+data-bs-target="#projectModal">
+
+<i class="fa fa-plus"></i>
+
+Add Project
+
+</button>
+
+</div>
+
+</div>
+
+<div class="table-responsive">
+
+<table id="projectTable"
+class="table table-bordered align-middle">
+
+<thead>
+
+<tr>
+
+<th>#</th>
+<th>Image</th>
+<th>Project</th>
+<th>Description</th>
+<th>Status</th>
+<th>Staging</th>
+<th>Production</th>
+<th>Actions</th>
+
+</tr>
+
+</thead>
+
+<tbody id="tableBody"></tbody>
+
+</table>
+
+</div>
+
+</div>
+
+<!-- MODAL -->
+
+<div class="modal fade"
+id="projectModal">
+
+<div class="modal-dialog modal-lg">
+
+<div class="modal-content">
+
+<div class="modal-header">
+
+<h5>
+Add / Update Project
+</h5>
+
+<button class="btn-close btn-close-white"
+data-bs-dismiss="modal"></button>
+
+</div>
+
+<div class="modal-body">
+
+<form id="projectForm">
+
+<input type="hidden"
+id="projectId">
+
+<div class="row">
+
+<div class="col-md-6 mb-3">
+
+<label>
+Project Name
+</label>
+
+<input type="text"
+id="projectName"
+class="form-control"
+required>
+
+</div>
+
+<div class="col-md-6 mb-3">
+
+<label>
+Image URL
+</label>
+
+<input type="text"
+id="projectImage"
+class="form-control"
+placeholder="Enter Image URL">
+
+</div>
+
+
+<div class="col-md-6 mb-3">
+
+<label>
+Staging URL
+</label>
+
+<input type="text"
+id="stagingUrl"
+class="form-control">
+
+</div>
+
+<div class="col-md-6 mb-3">
+
+<label>
+Production URL
+</label>
+
+<input type="text"
+id="productionUrl"
+class="form-control">
+
+</div>
+
+
+<div class="col-md-6 mb-3">
+
+<label>
+Status
+</label>
+
+<select id="projectStatus"
+class="form-select">
+
+<option>
+Active
+</option>
+
+<option>
+Pending
+</option>
+
+<option>
+Completed
+</option>
+
+</select>
+
+</div>
+
+<div class="col-12 mb-3">
+
+<label>
+Description
+</label>
+
+<textarea id="projectDesc"
+class="form-control"></textarea>
+
+</div>
+
+</div>
+
+<button type="submit"
+id="submitBtn"
+class="btn-main w-100">
+
+Save Project
+
+</button>
+
+</form>
+
+</div>
 
 </div>
 
@@ -318,338 +674,585 @@ Send
 <script type="module">
 
 import { initializeApp }
-from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
 
 import {
 getFirestore,
 collection,
 addDoc,
-query,
-orderBy,
-onSnapshot,
-serverTimestamp,
-setDoc,
+getDocs,
+deleteDoc,
+updateDoc,
 doc,
-getDoc
+getDoc,
+onSnapshot
 }
-from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
+
+import {
+getMessaging,
+getToken,
+onMessage
+}
+from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-messaging.js';
 
 
-/* FIREBASE */
+/* FIREBASE CONFIG */
 
 const firebaseConfig = {
 
-apiKey: "AIzaSyAlOrIXWqq1XEe1ya6UYx_csH6ckvo_x84",
+apiKey: 'AIzaSyAlOrIXWqq1XEe1ya6UYx_csH6ckvo_x84',
 
-authDomain:
-"project-dashboard-ee104.firebaseapp.com",
+authDomain: 'project-dashboard-ee104.firebaseapp.com',
 
-projectId:
-"project-dashboard-ee104",
+projectId: 'project-dashboard-ee104',
 
-storageBucket:
-"project-dashboard-ee104.firebasestorage.app",
+storageBucket: 'project-dashboard-ee104.firebasestorage.app',
 
-messagingSenderId:
-"462837501926",
+messagingSenderId: '462837501926',
 
-appId:
-"1:462837501926:web:aed16fc192890d16115027"
+appId: '1:462837501926:web:aed16fc192890d16115027',
+
+measurementId: 'G-0FDEWTYKB2'
 
 };
 
-const app =
-initializeApp(firebaseConfig);
+const app = initializeApp(firebaseConfig);
 
-const db =
-getFirestore(app);
+const db = getFirestore(app);
 
+const messaging = getMessaging(app);
 
-/* USER */
+const projectRef = collection(db,'projects');
 
-let currentUser =
-localStorage.getItem("chat_user");
-
-if(!currentUser){
-
-currentUser =
-prompt("Enter Your Name");
-
-localStorage.setItem(
-"chat_user",
-currentUser
+const modal =
+new bootstrap.Modal(
+document.getElementById('projectModal')
 );
 
-}
+let table;
 
-/* COLLECTIONS */
 
-const messagesRef =
-collection(
-db,
-"chat_messages"
+
+
+/* NOTIFICATION */
+
+async function initNotification(){
+
+try{
+
+const permission =
+await Notification.requestPermission();
+
+const registration =
+await navigator.serviceWorker.register(
+'/links/firebase-messaging-sw.js'
 );
 
-/* ONLINE */
+const token =
+await getToken(messaging,{
 
-await setDoc(
-doc(db,"users",currentUser),
-{
-name:currentUser,
-online:true,
-last_seen:new Date()
-},
-{
-merge:true
-}
-);
+vapidKey:
+'BHxU6wPSAJy1GjtgwERuZRrMHU3AFlaZxaWRgkTsJkYiHZ7QeNAjsXmLrwx8KG-527JacIAtBpSu_-CQrJ4lgBk',
 
-/* OFFLINE */
+serviceWorkerRegistration:
+registration
 
-window.addEventListener(
-"beforeunload",
-async ()=>{
+});
 
-await setDoc(
-doc(db,"users",currentUser),
-{
-online:false,
-last_seen:new Date()
-},
-{
-merge:true
-}
-);
+console.log('FCM TOKEN:',token);
 
-}
-);
 
-/* SEND MESSAGE */
-
-window.sendMessage =
-async function(){
-
-let msg =
-document
-.getElementById("message")
-.value
-.trim();
-
-if(!msg) return;
+/* SAVE TOKEN */
 
 await addDoc(
-messagesRef,
+collection(db,'fcm_tokens'),
 {
-user:currentUser,
-message:msg,
-seen:false,
-created_at:
-serverTimestamp(),
-time:
-new Date()
-.toLocaleTimeString()
+token: token,
+created_at: new Date()
 }
 );
 
-document
-.getElementById("message")
-.value="";
 
-};
 
-/* ENTER SEND */
 
-document
-.getElementById("message")
-.addEventListener(
-"keypress",
-function(e){
+}catch(error){
 
-if(e.key==="Enter"){
-
-sendMessage();
+console.log(error);
 
 }
 
 }
-);
 
-/* TYPING */
+initNotification();
 
-let typingTimeout;
+listenNotifications();
+  
+/* FOREGROUND MESSAGE */
 
-document
-.getElementById("message")
-.addEventListener(
-"input",
-async ()=>{
+onMessage(messaging,(payload)=>{
 
-await setDoc(
-doc(
-db,
-"typing",
-currentUser
-),
+console.log(payload);
+
+new Notification(
+
+payload.notification.title,
+
 {
-typing:true,
-user:currentUser
+body: payload.notification.body,
+icon: 'https://cdn-icons-png.flaticon.com/512/1827/1827392.png'
 }
+
 );
 
-clearTimeout(
-typingTimeout
-);
+});
 
-typingTimeout =
-setTimeout(
-async ()=>{
 
-await setDoc(
-doc(
-db,
-"typing",
-currentUser
-),
+function listenNotifications(){
+
+const notificationRef =
+collection(db,'notifications');
+
+onSnapshot(notificationRef,(snapshot)=>{
+
+snapshot.docChanges().forEach((change)=>{
+
+if(change.type === 'added'){
+
+const data = change.doc.data();
+
+if(Notification.permission === 'granted'){
+
+new Notification(
+
+data.title,
+
 {
-typing:false,
-user:currentUser
+body:data.body,
+icon:'https://cdn-icons-png.flaticon.com/512/1827/1827392.png'
 }
-);
 
-},
-1000
 );
 
 }
-);
-
-/* SHOW TYPING */
-
-onSnapshot(
-collection(db,"typing"),
-(snapshot)=>{
-
-let text = "";
-
-snapshot.forEach((d)=>{
-
-let data =
-d.data();
-
-if(
-data.user !== currentUser &&
-data.typing
-){
-
-text =
-data.user +
-" is typing...";
 
 }
 
 });
 
-document
-.getElementById(
-"typingBox"
-)
-.innerHTML =
-text;
+});
 
 }
-);
 
-/* REALTIME CHAT */
+/* LOAD PROJECTS */
 
-const q =
-query(
-messagesRef,
-orderBy(
-"created_at",
-"asc"
-)
-);
+async function loadProjects() {
 
-onSnapshot(
-q,
-(snapshot)=>{
+const snapshot =
+await getDocs(projectRef);
 
-let html="";
+const tbody =
+document.getElementById('tableBody');
 
-snapshot.forEach((doc)=>{
 
-let data =
-doc.data();
+/* DESTROY DATATABLE */
 
-let mine =
-data.user === currentUser;
+if ($.fn.DataTable.isDataTable('#projectTable')) {
 
-html += `
+$('#projectTable').DataTable().destroy();
 
-<div class="
-message-row
-${mine?'me':'other'}
-">
+}
 
-<div class="message">
 
-<b>
-${data.user}
-</b>
+/* CLEAR TABLE */
 
-<br>
+tbody.innerHTML = '';
 
-${data.message}
+let count = 1;
 
-<div class="time">
 
-${data.time || ''}
+/* APPEND ROWS */
 
-${mine ? ' ✓✓' : ''}
+snapshot.forEach((item) => {
 
-</div>
+const project = item.data();
 
-</div>
+let statusClass = 'active';
 
-</div>
+if (project.status === 'Pending') {
+
+statusClass = 'pending';
+
+}
+
+if (project.status === 'Completed') {
+
+statusClass = 'completed';
+
+}
+
+tbody.innerHTML += `
+
+<tr>
+
+<td>${count++}</td>
+
+<td>
+
+<img src="${project.image}"
+class="project-img">
+
+</td>
+
+<td>
+
+<b>${project.name}</b>
+
+</td>
+
+<td>
+
+${project.description || '-'}
+
+</td>
+
+<td>
+
+<span class="status ${statusClass}">
+${project.status}
+</span>
+
+</td>
+
+<td>
+
+<a href="${project.stagingUrl}"
+target="_blank"
+class="visit-btn">
+
+Staging
+
+</a>
+
+</td>
+
+<td>
+
+<a href="${project.productionUrl}"
+target="_blank"
+class="visit-btn">
+
+Production
+
+</a>
+
+</td>
+
+<td>
+
+<button class="action-btn edit-btn"
+onclick="editProject('${item.id}')">
+
+<i class="fa fa-pen"></i>
+
+</button>
+
+<button class="action-btn delete-btn"
+onclick="deleteProject('${item.id}')">
+
+<i class="fa fa-trash"></i>
+
+</button>
+
+</td>
+
+</tr>
 
 `;
 
 });
 
-document
-.getElementById(
-"chatBox"
-)
-.innerHTML =
-html;
+
+/* REINITIALIZE DATATABLE */
+
+table = $('#projectTable').DataTable({
+
+responsive: true,
+
+pageLength: 10,
+
+destroy: true
+
+});
+
+}
+
+
+/* EDIT */
+
+window.editProject = async function(id){
+
+const ref = doc(db,'projects',id);
+
+const snap = await getDoc(ref);
+
+if(snap.exists()){
+
+const data = snap.data();
+
+projectId.value = id;
+
+projectName.value = data.name;
+
+projectImage.value = data.image;
+
+stagingUrl.value = data.stagingUrl;
+
+productionUrl.value = data.productionUrl;
+
+projectDesc.value = data.description;
+
+projectStatus.value = data.status;
+
+modal.show();
+
+}
+
+}
+
+
+/* DELETE */
+
+/* DELETE */
+
+window.deleteProject = async function(id){
+
+const confirmText = prompt(
+"Enter Password for delete this project"
+);
+
+if(confirmText !== 'Shiv'){
+
+alert('Wrong Password. Project not deleted.');
+
+return;
+
+}
+
+try{
+
+await deleteDoc(doc(db,'projects',id));
+
+alert('Project Deleted Successfully');
+
+loadProjects();
+
+}catch(error){
+
+console.log(error);
+
+alert('Delete Failed');
+
+}
+
+}
+
+
+/* SAVE */
+/* SAVE */
 
 document
-.getElementById(
-"chatBox"
-)
-.scrollTop =
-document
-.getElementById(
-"chatBox"
-)
-.scrollHeight;
+.getElementById('projectForm')
+.addEventListener('submit', async function(e){
 
+e.preventDefault();
+
+const submitBtn =
+document.getElementById('submitBtn');
+
+/* SAFETY CHECK */
+
+if(!submitBtn){
+
+console.log('Submit button not found');
+
+return;
+
+}
+
+submitBtn.disabled = true;
+
+const oldBtnText = submitBtn.innerHTML;
+
+submitBtn.innerHTML =
+`<span class="spinner-border spinner-border-sm"></span>
+ Saving...`;
+
+try{
+
+const id =
+document.getElementById('projectId').value;
+
+const data = {
+
+name:
+document.getElementById('projectName').value.trim(),
+
+image:
+document.getElementById('projectImage').value.trim()
+||
+'https://i.ibb.co/0jdbf75Y/image.png',
+
+stagingUrl:
+document.getElementById('stagingUrl').value.trim(),
+
+productionUrl:
+document.getElementById('productionUrl').value.trim(),
+
+description:
+document.getElementById('projectDesc').value.trim(),
+
+status:
+document.getElementById('projectStatus').value
+
+};
+
+
+/* CHECK DUPLICATE */
+
+const snapshot = await getDocs(projectRef);
+
+let duplicateFound = false;
+
+snapshot.forEach((docItem)=>{
+
+const project = docItem.data();
+
+if(
+
+project.name.toLowerCase() === data.name.toLowerCase()
+
+&&
+
+docItem.id !== id
+
+){
+
+duplicateFound = true;
+
+}
+
+});
+
+if(duplicateFound){
+
+alert('Project already exists');
+
+submitBtn.disabled = false;
+
+submitBtn.innerHTML = oldBtnText;
+
+return;
+
+}
+
+
+/* UPDATE */
+
+if(id){
+
+await updateDoc(
+doc(db,'projects',id),
+data
+);
+
+await addDoc(
+collection(db,'notifications'),
+{
+title:'Project Updated',
+body:data.name,
+created_at:new Date()
 }
 );
 
-/* ONLINE STATUS */
+}else{
 
-onSnapshot(
-doc(
-db,
-"users",
-currentUser
-),
-async ()=>{}
+/* INSERT */
+
+await addDoc(projectRef,data);
+
+await addDoc(
+collection(db,'notifications'),
+{
+title:'New Project Added',
+body:data.name,
+created_at:new Date()
+}
 );
+
+}
+
+document.getElementById('projectForm').reset();
+
+document.getElementById('projectId').value='';
+
+modal.hide();
+
+await loadProjects();
+
+alert('Project Saved Successfully');
+
+}catch(error){
+
+console.log(error);
+
+alert(error.message);
+
+}finally{
+
+submitBtn.disabled = false;
+
+submitBtn.innerHTML = oldBtnText;
+
+}
+
+});
+
+
+/* SEARCH */
+
+searchInput.addEventListener('keyup',function(){
+
+if(table){
+
+table.search(this.value).draw();
+
+}
+
+});
+
+
+/* FILTER */
+
+statusFilter.addEventListener('change',function(){
+
+if(table){
+
+table.column(4)
+.search(this.value)
+.draw();
+
+}
+
+});
+
+
+/* INITIAL LOAD */
+
+loadProjects();
 
 </script>
 
 </body>
+
 </html>
