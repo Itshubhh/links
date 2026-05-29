@@ -1,671 +1,104 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html>
 <head>
-
 <meta charset="UTF-8">
-
-<meta name="viewport"
-content="width=device-width, initial-scale=1.0">
-
-<title>
-Project Dashboard
-</title>
-
-<link rel="stylesheet"
-href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
-
-<link rel="stylesheet"
-href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-
-<link rel="stylesheet"
-href="https://cdn.datatables.net/1.13.8/css/dataTables.bootstrap5.min.css">
-
-<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-
-<script src="https://cdn.datatables.net/1.13.8/js/jquery.dataTables.min.js"></script>
-
-<script src="https://cdn.datatables.net/1.13.8/js/dataTables.bootstrap5.min.js"></script>
+<title>Realtime Chat</title>
 
 <style>
 
 body{
-background:#f1f5f9;
-font-family:Arial;
-padding:20px;
-font-size:13px;
+    font-family:Arial;
+    background:#f5f5f5;
+    margin:0;
+    padding:20px;
 }
 
-.card-box{
-background:white;
-padding:20px;
-border-radius:15px;
-box-shadow:0px 5px 20px rgba(0,0,0,0.05);
+.chat-container{
+    width:700px;
+    margin:auto;
+    background:#fff;
+    border-radius:10px;
+    padding:20px;
+    box-shadow:0 0 10px rgba(0,0,0,.1);
 }
 
-.topbar{
-display:flex;
-justify-content:space-between;
-align-items:center;
-flex-wrap:wrap;
-gap:10px;
-margin-bottom:20px;
+#chatBox{
+    height:450px;
+    overflow-y:auto;
+    border:1px solid #ddd;
+    padding:10px;
+    margin-bottom:10px;
 }
 
-.btn-main{
-background:#2563eb;
-color:white;
-border:none;
-padding:10px 16px;
-border-radius:10px;
-font-size:12px;
+.message{
+    margin-bottom:10px;
+    padding:10px;
+    border-radius:8px;
+    background:#f1f1f1;
 }
 
-.search-input,
-.filter-select{
-height:40px;
-border:1px solid #dbe4f0;
-border-radius:10px;
-padding:0px 10px;
-font-size:12px;
+.message b{
+    color:#2563eb;
 }
 
-.project-img{
-width:55px;
-height:55px;
-border-radius:10px;
-object-fit:cover;
+.input-group{
+    display:flex;
+    gap:10px;
 }
 
-.status{
-padding:5px 12px;
-border-radius:20px;
-font-size:11px;
-font-weight:bold;
+input{
+    padding:10px;
+    border:1px solid #ccc;
+    border-radius:5px;
 }
 
-.active{
-background:#dcfce7;
-color:#166534;
+#username{
+    width:150px;
 }
 
-.pending{
-background:#fef3c7;
-color:#92400e;
+#message{
+    flex:1;
 }
 
-.completed{
-background:#dbeafe;
-color:#1d4ed8;
+button{
+    background:#2563eb;
+    color:white;
+    border:none;
+    padding:10px 20px;
+    border-radius:5px;
+    cursor:pointer;
 }
 
-.action-btn{
-width:32px;
-height:32px;
-border:none;
-border-radius:8px;
-color:white;
-font-size:11px;
-}
-
-.edit-btn{
-background:#f59e0b;
-}
-
-.delete-btn{
-background:#ef4444;
-}
-
-.visit-btn{
-background:#2563eb;
-color:white;
-padding:6px 10px;
-border-radius:8px;
-text-decoration:none;
-font-size:11px;
-}
-
-.table thead{
-background:#111827;
-color:white;
-}
-
-.table thead th{
-font-size:12px;
-}
-
-.table tbody td{
-font-size:12px;
-vertical-align:middle;
-}
-
-.modal-content{
-border-radius:15px;
-}
-
-.modal-header{
-background:#2563eb;
-color:white;
-}
-
-.form-control,
-.form-select{
-font-size:12px;
-border-radius:10px;
-height:42px;
-}
-
-textarea.form-control{
-height:auto;
-}
-
-.notification-box{
-background:#eff6ff;
-border:1px solid #bfdbfe;
-padding:10px;
-border-radius:10px;
-font-size:12px;
-margin-bottom:15px;
-color:#1e3a8a;
-}
-
-@media(max-width:768px){
-
-.topbar{
-flex-direction:column;
-align-items:stretch;
-}
-
-.search-input{
-width:100%;
-}
-
-.btn-main{
-width:100%;
-}
-
+button:hover{
+    background:#1d4ed8;
 }
 
 </style>
-
 </head>
 
 <body>
-<style>
 
+<div class="chat-container">
 
+<h2>Realtime Firebase Chat</h2>
 
-/* LOGIN POPUP */
-
-#loginOverlay{
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100%;
-background:rgba(15,23,42,0.75);
-z-index:999999;
-display:flex;
-justify-content:center;
-align-items:center;
-backdrop-filter:blur(5px);
-}
-
-#loginCard{
-width:100%;
-max-width:400px;
-background:white;
-border-radius:20px;
-overflow:hidden;
-box-shadow:0 10px 40px rgba(0,0,0,0.2);
-animation:popup .3s ease;
-}
-
-@keyframes popup{
-
-from{
-transform:scale(.8);
-opacity:0;
-}
-
-to{
-transform:scale(1);
-opacity:1;
-}
-
-}
-
-.login-header{
-background:#2563eb;
-padding:25px;
-text-align:center;
-color:white;
-}
-
-.login-header i{
-font-size:45px;
-margin-bottom:10px;
-}
-
-.login-body{
-padding:30px;
-}
-
-.login-input{
-height:50px;
-border-radius:12px;
-font-size:14px;
-}
-
-.login-btn{
-height:50px;
-border:none;
-border-radius:12px;
-background:#2563eb;
-color:white;
-font-weight:600;
-width:100%;
-transition:.3s;
-font-size:15px;
-}
-
-.login-btn:hover{
-background:#1d4ed8;
-}
-
-.login-error{
-font-size:13px;
-color:red;
-display:none;
-margin-top:12px;
-text-align:center;
-font-weight:600;
-}
-
-</style>
-
-<!-- LOGIN POPUP -->
-
-<div id="loginOverlay">
-
-<div id="loginCard">
-
-<div class="login-header">
-
-<i class="fa fa-lock"></i>
-
-<h4 class="mb-0">
-Secure Dashboard Login
-</h4>
-
+<div style="margin-bottom:10px;">
+    <input type="text"
+           id="username"
+           placeholder="Your Name">
 </div>
 
-<div class="login-body">
+<div id="chatBox"></div>
 
-<input
-type="password"
-id="loginPassword"
-class="form-control login-input mb-3"
-placeholder="Enter Password"
->
+<div class="input-group">
 
-<button
-id="loginBtn"
-class="login-btn">
+    <input type="text"
+           id="message"
+           placeholder="Type message">
 
-Login
-
-</button>
-
-<div
-id="loginError"
-class="login-error">
-
-Wrong Password
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-<script>
-
-/* PASSWORD */
-
-const dashboardPassword = "Shubh";
-
-/* SESSION TIME 1 MINUTE */
-
-const sessionTime = 1800000;
-
-/* CHECK SESSION */
-
-const loginData =
-JSON.parse(
-sessionStorage.getItem('dashboard_login')
-);
-
-let validSession = false;
-
-if(
-loginData &&
-(Date.now() - loginData.loginTime) < sessionTime
-){
-
-validSession = true;
-
-}
-
-/* SHOW PAGE IF SESSION ACTIVE */
-
-if(validSession){
-
-document.documentElement.style.display = 'block';
-
-document.addEventListener(
-'DOMContentLoaded',
-()=>{
-
-const overlay =
-document.getElementById('loginOverlay');
-
-if(overlay){
-
-overlay.remove();
-
-}
-
-}
-);
-
-}else{
-
-/* SHOW LOGIN POPUP */
-
-document.documentElement.style.display = 'block';
-
-document
-.getElementById('loginBtn')
-.addEventListener('click',()=>{
-
-const password =
-document
-.getElementById('loginPassword')
-.value;
-
-if(password === dashboardPassword){
-
-sessionStorage.setItem(
-'dashboard_login',
-JSON.stringify({
-loginTime: Date.now()
-})
-);
-
-document
-.getElementById('loginOverlay')
-.remove();
-
-location.reload();
-
-}else{
-
-document
-.getElementById('loginError')
-.style.display = 'block';
-
-}
-
-});
-
-}
-
-/* AUTO EXPIRE */
-
-setTimeout(()=>{
-
-sessionStorage.removeItem(
-'dashboard_login'
-);
-
-alert('Session Expired');
-
-location.reload();
-
-}, sessionTime);
-
-</script>
-  <div class="card-box">
-
-<div class="notification-box">
-
-<i class="fa fa-bell"></i>
-
-Projects
-</div>
-
-<div class="topbar">
-
-<div>
-
-<h3>
-Project Dashboard
-</h3>
-
-<p class="text-muted mb-0">
-</p>
-
-</div>
-
-<div class="d-flex gap-2 flex-wrap">
-
-<input type="text"
-id="searchInput"
-class="search-input"
-placeholder="Search">
-
-<select id="statusFilter"
-class="filter-select">
-
-<option value="">
-All Status
-</option>
-
-<option value="Active">
-Active
-</option>
-
-<option value="Pending">
-Pending
-</option>
-
-<option value="Completed">
-Completed
-</option>
-
-</select>
-
-<button class="btn-main"
-data-bs-toggle="modal"
-data-bs-target="#projectModal">
-
-<i class="fa fa-plus"></i>
-
-Add Project
-
-</button>
-
-</div>
-
-</div>
-
-<div class="table-responsive">
-
-<table id="projectTable"
-class="table table-bordered align-middle">
-
-<thead>
-
-<tr>
-
-<th>#</th>
-<th>Image</th>
-<th>Project</th>
-<th>Description</th>
-<th>Status</th>
-<th>Staging</th>
-<th>Production</th>
-<th>Actions</th>
-
-</tr>
-
-</thead>
-
-<tbody id="tableBody"></tbody>
-
-</table>
-
-</div>
-
-</div>
-
-<!-- MODAL -->
-
-<div class="modal fade"
-id="projectModal">
-
-<div class="modal-dialog modal-lg">
-
-<div class="modal-content">
-
-<div class="modal-header">
-
-<h5>
-Add / Update Project
-</h5>
-
-<button class="btn-close btn-close-white"
-data-bs-dismiss="modal"></button>
-
-</div>
-
-<div class="modal-body">
-
-<form id="projectForm">
-
-<input type="hidden"
-id="projectId">
-
-<div class="row">
-
-<div class="col-md-6 mb-3">
-
-<label>
-Project Name
-</label>
-
-<input type="text"
-id="projectName"
-class="form-control"
-required>
-
-</div>
-
-<div class="col-md-6 mb-3">
-
-<label>
-Image URL
-</label>
-
-<input type="text"
-id="projectImage"
-class="form-control"
-placeholder="Enter Image URL">
-
-</div>
-
-
-<div class="col-md-6 mb-3">
-
-<label>
-Staging URL
-</label>
-
-<input type="text"
-id="stagingUrl"
-class="form-control">
-
-</div>
-
-<div class="col-md-6 mb-3">
-
-<label>
-Production URL
-</label>
-
-<input type="text"
-id="productionUrl"
-class="form-control">
-
-</div>
-
-
-<div class="col-md-6 mb-3">
-
-<label>
-Status
-</label>
-
-<select id="projectStatus"
-class="form-select">
-
-<option>
-Active
-</option>
-
-<option>
-Pending
-</option>
-
-<option>
-Completed
-</option>
-
-</select>
-
-</div>
-
-<div class="col-12 mb-3">
-
-<label>
-Description
-</label>
-
-<textarea id="projectDesc"
-class="form-control"></textarea>
-
-</div>
-
-</div>
-
-<button type="submit"
-id="submitBtn"
-class="btn-main w-100">
-
-Save Project
-
-</button>
-
-</form>
-
-</div>
-
-</div>
+    <button onclick="sendMessage()">
+        Send
+    </button>
 
 </div>
 
@@ -674,46 +107,38 @@ Save Project
 <script type="module">
 
 import { initializeApp }
-from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 
 import {
-getFirestore,
-collection,
-addDoc,
-getDocs,
-deleteDoc,
-updateDoc,
-doc,
-getDoc,
-onSnapshot
+    getFirestore,
+    collection,
+    addDoc,
+    query,
+    orderBy,
+    onSnapshot,
+    serverTimestamp
 }
-from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-import {
-getMessaging,
-getToken,
-onMessage
-}
-from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-messaging.js';
-
-
-/* FIREBASE CONFIG */
 
 const firebaseConfig = {
 
-apiKey: 'AIzaSyAlOrIXWqq1XEe1ya6UYx_csH6ckvo_x84',
+    apiKey: "AIzaSyAlOrIXWqq1XEe1ya6UYx_csH6ckvo_x84",
 
-authDomain: 'project-dashboard-ee104.firebaseapp.com',
+    authDomain:
+    "project-dashboard-ee104.firebaseapp.com",
 
-projectId: 'project-dashboard-ee104',
+    projectId:
+    "project-dashboard-ee104",
 
-storageBucket: 'project-dashboard-ee104.firebasestorage.app',
+    storageBucket:
+    "project-dashboard-ee104.firebasestorage.app",
 
-messagingSenderId: '462837501926',
+    messagingSenderId:
+    "462837501926",
 
-appId: '1:462837501926:web:aed16fc192890d16115027',
-
-measurementId: 'G-0FDEWTYKB2'
+    appId:
+    "1:462837501926:web:aed16fc192890d16115027"
 
 };
 
@@ -721,538 +146,106 @@ const app = initializeApp(firebaseConfig);
 
 const db = getFirestore(app);
 
-const messaging = getMessaging(app);
-
-const projectRef = collection(db,'projects');
-
-const modal =
-new bootstrap.Modal(
-document.getElementById('projectModal')
-);
-
-let table;
-
-
-
-
-/* NOTIFICATION */
-
-async function initNotification(){
-
-try{
-
-const permission =
-await Notification.requestPermission();
-
-const registration =
-await navigator.serviceWorker.register(
-'/links/firebase-messaging-sw.js'
-);
-
-const token =
-await getToken(messaging,{
-
-vapidKey:
-'BHxU6wPSAJy1GjtgwERuZRrMHU3AFlaZxaWRgkTsJkYiHZ7QeNAjsXmLrwx8KG-527JacIAtBpSu_-CQrJ4lgBk',
-
-serviceWorkerRegistration:
-registration
-
-});
-
-console.log('FCM TOKEN:',token);
-
-
-/* SAVE TOKEN */
-
-await addDoc(
-collection(db,'fcm_tokens'),
-{
-token: token,
-created_at: new Date()
-}
-);
-
-
-
-
-}catch(error){
-
-console.log(error);
-
-}
-
-}
-
-initNotification();
-
-listenNotifications();
-  
-/* FOREGROUND MESSAGE */
-
-onMessage(messaging,(payload)=>{
-
-console.log(payload);
-
-new Notification(
-
-payload.notification.title,
-
-{
-body: payload.notification.body,
-icon: 'https://cdn-icons-png.flaticon.com/512/1827/1827392.png'
-}
-
-);
-
-});
-
-
-function listenNotifications(){
-
-const notificationRef =
-collection(db,'notifications');
-
-onSnapshot(notificationRef,(snapshot)=>{
-
-snapshot.docChanges().forEach((change)=>{
-
-if(change.type === 'added'){
-
-const data = change.doc.data();
-
-if(Notification.permission === 'granted'){
-
-new Notification(
-
-data.title,
-
-{
-body:data.body,
-icon:'https://cdn-icons-png.flaticon.com/512/1827/1827392.png'
-}
-
-);
-
-}
-
-}
-
-});
-
-});
-
-}
-
-/* LOAD PROJECTS */
-
-async function loadProjects() {
-
-const snapshot =
-await getDocs(projectRef);
-
-const tbody =
-document.getElementById('tableBody');
-
-
-/* DESTROY DATATABLE */
-
-if ($.fn.DataTable.isDataTable('#projectTable')) {
-
-$('#projectTable').DataTable().destroy();
-
-}
-
-
-/* CLEAR TABLE */
-
-tbody.innerHTML = '';
-
-let count = 1;
-
-
-/* APPEND ROWS */
-
-snapshot.forEach((item) => {
-
-const project = item.data();
-
-let statusClass = 'active';
-
-if (project.status === 'Pending') {
-
-statusClass = 'pending';
-
-}
-
-if (project.status === 'Completed') {
-
-statusClass = 'completed';
-
-}
-
-tbody.innerHTML += `
-
-<tr>
-
-<td>${count++}</td>
-
-<td>
-
-<img src="${project.image}"
-class="project-img">
-
-</td>
-
-<td>
-
-<b>${project.name}</b>
-
-</td>
-
-<td>
-
-${project.description || '-'}
-
-</td>
-
-<td>
-
-<span class="status ${statusClass}">
-${project.status}
-</span>
-
-</td>
-
-<td>
-
-<a href="${project.stagingUrl}"
-target="_blank"
-class="visit-btn">
-
-Staging
-
-</a>
-
-</td>
-
-<td>
-
-<a href="${project.productionUrl}"
-target="_blank"
-class="visit-btn">
-
-Production
-
-</a>
-
-</td>
-
-<td>
-
-<button class="action-btn edit-btn"
-onclick="editProject('${item.id}')">
-
-<i class="fa fa-pen"></i>
-
-</button>
-
-<button class="action-btn delete-btn"
-onclick="deleteProject('${item.id}')">
-
-<i class="fa fa-trash"></i>
-
-</button>
-
-</td>
-
-</tr>
-
-`;
-
-});
-
-
-/* REINITIALIZE DATATABLE */
-
-table = $('#projectTable').DataTable({
-
-responsive: true,
-
-pageLength: 10,
-
-destroy: true
-
-});
-
-}
-
-
-/* EDIT */
-
-window.editProject = async function(id){
-
-const ref = doc(db,'projects',id);
-
-const snap = await getDoc(ref);
-
-if(snap.exists()){
-
-const data = snap.data();
-
-projectId.value = id;
-
-projectName.value = data.name;
-
-projectImage.value = data.image;
-
-stagingUrl.value = data.stagingUrl;
-
-productionUrl.value = data.productionUrl;
-
-projectDesc.value = data.description;
-
-projectStatus.value = data.status;
-
-modal.show();
-
-}
-
-}
-
-
-/* DELETE */
-
-/* DELETE */
-
-window.deleteProject = async function(id){
-
-const confirmText = prompt(
-"Enter Password for delete this project"
-);
-
-if(confirmText !== 'Shiv'){
-
-alert('Wrong Password. Project not deleted.');
-
-return;
-
-}
-
-try{
-
-await deleteDoc(doc(db,'projects',id));
-
-alert('Project Deleted Successfully');
-
-loadProjects();
-
-}catch(error){
-
-console.log(error);
-
-alert('Delete Failed');
-
-}
-
-}
-
-
-/* SAVE */
-/* SAVE */
-
-document
-.getElementById('projectForm')
-.addEventListener('submit', async function(e){
-
-e.preventDefault();
-
-const submitBtn =
-document.getElementById('submitBtn');
-
-/* SAFETY CHECK */
-
-if(!submitBtn){
-
-console.log('Submit button not found');
-
-return;
-
-}
-
-submitBtn.disabled = true;
-
-const oldBtnText = submitBtn.innerHTML;
-
-submitBtn.innerHTML =
-`<span class="spinner-border spinner-border-sm"></span>
- Saving...`;
-
-try{
-
-const id =
-document.getElementById('projectId').value;
-
-const data = {
-
-name:
-document.getElementById('projectName').value.trim(),
-
-image:
-document.getElementById('projectImage').value.trim()
-||
-'https://i.ibb.co/0jdbf75Y/image.png',
-
-stagingUrl:
-document.getElementById('stagingUrl').value.trim(),
-
-productionUrl:
-document.getElementById('productionUrl').value.trim(),
-
-description:
-document.getElementById('projectDesc').value.trim(),
-
-status:
-document.getElementById('projectStatus').value
-
+const chatRef =
+    collection(db,"chat_messages");
+
+
+window.sendMessage =
+async function(){
+
+    let username =
+        document
+        .getElementById("username")
+        .value
+        .trim();
+
+    let message =
+        document
+        .getElementById("message")
+        .value
+        .trim();
+
+    if(username === ""){
+        alert("Enter Name");
+        return;
+    }
+
+    if(message === ""){
+        return;
+    }
+
+    await addDoc(
+        chatRef,
+        {
+            username: username,
+            message: message,
+            created_at:
+            serverTimestamp()
+        }
+    );
+
+    document
+    .getElementById("message")
+    .value = "";
 };
 
 
-/* CHECK DUPLICATE */
-
-const snapshot = await getDocs(projectRef);
-
-let duplicateFound = false;
-
-snapshot.forEach((docItem)=>{
-
-const project = docItem.data();
-
-if(
-
-project.name.toLowerCase() === data.name.toLowerCase()
-
-&&
-
-docItem.id !== id
-
-){
-
-duplicateFound = true;
-
-}
-
-});
-
-if(duplicateFound){
-
-alert('Project already exists');
-
-submitBtn.disabled = false;
-
-submitBtn.innerHTML = oldBtnText;
-
-return;
-
-}
-
-
-/* UPDATE */
-
-if(id){
-
-await updateDoc(
-doc(db,'projects',id),
-data
+const q = query(
+    chatRef,
+    orderBy("created_at","asc")
 );
 
-await addDoc(
-collection(db,'notifications'),
-{
-title:'Project Updated',
-body:data.name,
-created_at:new Date()
-}
+onSnapshot(
+    q,
+    (snapshot)=>{
+
+        let html = "";
+
+        snapshot.forEach((doc)=>{
+
+            let data =
+                doc.data();
+
+            html += `
+            <div class="message">
+                <b>${data.username}</b><br>
+                ${data.message}
+            </div>
+            `;
+
+        });
+
+        document
+        .getElementById("chatBox")
+        .innerHTML = html;
+
+        document
+        .getElementById("chatBox")
+        .scrollTop =
+        document
+        .getElementById("chatBox")
+        .scrollHeight;
+
+    }
 );
 
-}else{
 
-/* INSERT */
+document
+.getElementById("message")
+.addEventListener(
+    "keypress",
+    function(e){
 
-await addDoc(projectRef,data);
+        if(e.key==="Enter"){
 
-await addDoc(
-collection(db,'notifications'),
-{
-title:'New Project Added',
-body:data.name,
-created_at:new Date()
-}
+            sendMessage();
+
+        }
+
+    }
 );
-
-}
-
-document.getElementById('projectForm').reset();
-
-document.getElementById('projectId').value='';
-
-modal.hide();
-
-await loadProjects();
-
-alert('Project Saved Successfully');
-
-}catch(error){
-
-console.log(error);
-
-alert(error.message);
-
-}finally{
-
-submitBtn.disabled = false;
-
-submitBtn.innerHTML = oldBtnText;
-
-}
-
-});
-
-
-/* SEARCH */
-
-searchInput.addEventListener('keyup',function(){
-
-if(table){
-
-table.search(this.value).draw();
-
-}
-
-});
-
-
-/* FILTER */
-
-statusFilter.addEventListener('change',function(){
-
-if(table){
-
-table.column(4)
-.search(this.value)
-.draw();
-
-}
-
-});
-
-
-/* INITIAL LOAD */
-
-loadProjects();
 
 </script>
 
 </body>
-
 </html>
