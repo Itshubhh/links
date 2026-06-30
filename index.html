@@ -304,26 +304,43 @@ Secure Dashboard Login
 
 <div class="login-body">
 
-<input
-type="password"
-id="loginPassword"
-class="form-control login-input mb-3"
-placeholder="Enter Password"
->
+    <input
+        type="password"
+        id="loginPassword"
+        class="form-control login-input mb-3"
+        placeholder="Enter Password">
 
-<button
-id="loginBtn"
-class="login-btn">
+    <div class="d-grid gap-2">
 
-Login
+        <button
+            type="button"
+            id="showPasswordBtn"
+            class="btn btn-outline-secondary">
 
-</button>
+            <i class="fa fa-eye"></i> Show Password
 
-<div
-id="loginError"
-class="login-error">
+        </button>
 
-Wrong Password
+        <button
+            type="button"
+            id="loginBtn"
+            class="login-btn">
+
+            <i class="fa fa-sign-in-alt"></i> Login
+
+        </button>
+
+    </div>
+
+    <div
+        id="loginError"
+        class="login-error">
+
+        Wrong Password
+
+    </div>
+
+
 
 </div>
 
@@ -334,7 +351,67 @@ Wrong Password
 </div>
 
 <script>
+const passwordInput = document.getElementById("loginPassword");
+const showPasswordBtn = document.getElementById("showPasswordBtn");
 
+/* SHOW / HIDE PASSWORD */
+
+showPasswordBtn.addEventListener("click", function () {
+
+    if (passwordInput.type === "password") {
+
+        passwordInput.type = "text";
+        this.innerHTML = '<i class="fa fa-eye-slash"></i> Hide Password';
+
+    } else {
+
+        passwordInput.type = "password";
+        this.innerHTML = '<i class="fa fa-eye"></i> Show Password';
+
+    }
+
+});
+
+/* LOGIN FUNCTION */
+
+function loginDashboard() {
+
+    const password = passwordInput.value;
+
+    if (password === dashboardPassword) {
+
+        sessionStorage.setItem(
+            "dashboard_login",
+            JSON.stringify({
+                loginTime: Date.now()
+            })
+        );
+
+        location.reload();
+
+    } else {
+
+        document.getElementById("loginError").style.display = "block";
+        passwordInput.focus();
+
+    }
+
+}
+
+/* Login Button */
+
+document.getElementById("loginBtn")
+.addEventListener("click", loginDashboard);
+
+/* Press Enter */
+
+passwordInput.addEventListener("keydown", function (e) {
+
+    if (e.key === "Enter") {
+        loginDashboard();
+    }
+
+});
 /* PASSWORD */
 
 const dashboardPassword = "Shubh";
@@ -872,104 +949,70 @@ let count = 1;
 
 
 /* APPEND ROWS */
+const projects = [];
 
 snapshot.forEach((item) => {
+    projects.push({
+        id: item.id,
+        ...item.data()
+    });
+});
 
-const project = item.data();
+// Sort A-Z by project name
+projects.sort((a, b) =>
+    a.name.localeCompare(b.name, undefined, {
+        sensitivity: 'base'
+    })
+);
 
-let statusClass = 'active';
+projects.forEach((project) => {
 
-if (project.status === 'Pending') {
+    let statusClass = 'active';
 
-statusClass = 'pending';
+    if (project.status === 'Pending') {
+        statusClass = 'pending';
+    }
 
-}
+    if (project.status === 'Completed') {
+        statusClass = 'completed';
+    }
 
-if (project.status === 'Completed') {
+    tbody.innerHTML += `
+        <tr>
+            <td>${count++}</td>
+            <td>
+                <img src="${project.image}" class="project-img">
+            </td>
+            <td><b>${project.name}</b></td>
+            <td>${project.description || '-'}</td>
+            <td>
+                <span class="status ${statusClass}">
+                    ${project.status}
+                </span>
+            </td>
+            <td>
+                <a href="${project.stagingUrl}" target="_blank" class="visit-btn">
+                    Staging
+                </a>
+            </td>
+            <td>
+                <a href="${project.productionUrl}" target="_blank" class="visit-btn">
+                    Production
+                </a>
+            </td>
+            <td>
+                <button class="action-btn edit-btn"
+                    onclick="editProject('${project.id}')">
+                    <i class="fa fa-pen"></i>
+                </button>
 
-statusClass = 'completed';
-
-}
-
-tbody.innerHTML += `
-
-<tr>
-
-<td>${count++}</td>
-
-<td>
-
-<img src="${project.image}"
-class="project-img">
-
-</td>
-
-<td>
-
-<b>${project.name}</b>
-
-</td>
-
-<td>
-
-${project.description || '-'}
-
-</td>
-
-<td>
-
-<span class="status ${statusClass}">
-${project.status}
-</span>
-
-</td>
-
-<td>
-
-<a href="${project.stagingUrl}"
-target="_blank"
-class="visit-btn">
-
-Staging
-
-</a>
-
-</td>
-
-<td>
-
-<a href="${project.productionUrl}"
-target="_blank"
-class="visit-btn">
-
-Production
-
-</a>
-
-</td>
-
-<td>
-
-<button class="action-btn edit-btn"
-onclick="editProject('${item.id}')">
-
-<i class="fa fa-pen"></i>
-
-</button>
-
-<button class="action-btn delete-btn"
-onclick="deleteProject('${item.id}')">
-
-<i class="fa fa-trash"></i>
-
-</button>
-
-</td>
-
-</tr>
-
-`;
-
+                <button class="action-btn delete-btn"
+                    onclick="deleteProject('${project.id}')">
+                    <i class="fa fa-trash"></i>
+                </button>
+            </td>
+        </tr>
+    `;
 });
 
 
